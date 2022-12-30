@@ -22,7 +22,7 @@ class StartScreenState extends State<StartScreen>{
       data: mediaQueryData.copyWith(textScaleFactor: 1),
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(onPressed: () {  },
+          leading: IconButton(onPressed: () { },
             icon: const Icon(Icons.menu),
           ),
           actions: [

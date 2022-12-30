@@ -100,7 +100,6 @@ class CustomCalcBtn extends StatelessWidget{
           ),
       ),)
     ],);
-
   }
 }
 
@@ -196,7 +195,9 @@ class OpenCalculator extends StatelessWidget{
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(10),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, "/calculator");
+              },
             ),
           ),)
       ],);

@@ -1,3 +1,4 @@
+import 'package:exchanger/screens/calculatorScreen/calculator_screen.dart';
 import 'package:exchanger/screens/mainScreen/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const StartScreen(),
+        '/calculator': (context) => const CalculatorScreen(),
       },
     );
   }
