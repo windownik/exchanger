@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import '../mainScreen/bottom_custom_bar.dart';
 import 'input_output_field.dart';
+import 'all_btns.dart';
 
 class CalculatorScreen extends StatefulWidget {
   const CalculatorScreen({super.key});
@@ -36,7 +36,7 @@ class CalculatorScreenState extends State<CalculatorScreen> {
                   children: [
                     CustomCalcBtn(calcBtnText: 'C',),
                     CustomCalcBtn(calcBtnText: '%',),
-                    CustomCalcBtn(calcBtnText: '+/-',),
+                    CustomCalcBtn(calcBtnText: '±',),
                     CustomCalcBtn(calcBtnText: '/',),
                   ],
                 ),
@@ -76,8 +76,8 @@ class CalculatorScreenState extends State<CalculatorScreen> {
                   children: [
                     CustomCalcBtn(calcBtnText: '0',),
                     CustomCalcBtn(calcBtnText: ',',),
-                    CustomCalcBtn(calcBtnText: '<-',),
-                    CustomCalcBtn(calcBtnText: 'OK',),
+                    const BtnDeleteLust(),
+                    const ReturnToMain(),
                   ],
                 ),
               ],

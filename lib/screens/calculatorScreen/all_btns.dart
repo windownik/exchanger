@@ -87,8 +87,8 @@ class BtnClear extends StatelessWidget {
   }
 }
 
-class BtnReload extends StatelessWidget {
-  const BtnReload({super.key});
+class BtnDeleteLust extends StatelessWidget {
+  const BtnDeleteLust({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -98,11 +98,11 @@ class BtnReload extends StatelessWidget {
           height: 80,
           width: 80,
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(142, 133, 167, 1.0),
+            color: const Color.fromRGBO(234, 100, 131, 1.0),
             borderRadius: BorderRadius.circular(10),
           ),
           child: const Center(
-            child: Icon(Icons.refresh),
+            child: Icon(Icons.backspace_outlined),
           ),
         ),
         SizedBox(
@@ -122,35 +122,34 @@ class BtnReload extends StatelessWidget {
 }
 
 
-class OpenCalculator extends StatelessWidget {
-  const OpenCalculator({super.key});
+class ReturnToMain extends StatelessWidget {
+  const ReturnToMain({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
-          height: 170,
+          height: 80,
           width: 80,
           decoration: BoxDecoration(
             color: const Color.fromRGBO(208, 101, 36, 1.0),
             borderRadius: BorderRadius.circular(10),
           ),
           child: const Center(
-            child: Icon(
-              Icons.calculate_outlined,
-              size: 60,
-            ),
+            child: Text("OK")
           ),
         ),
         SizedBox(
-          height: 170,
+          height: 80,
           width: 80,
           child: Material(
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(10),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/');
+              },
             ),
           ),
         )
