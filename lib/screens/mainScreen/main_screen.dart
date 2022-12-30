@@ -34,7 +34,9 @@ class StartScreenState extends State<StartScreen>{
           title: const Text('Exchanger'
           ),
         ),
-        body: const SingleChildScrollView(child: Center(child: Text("Exchanger"),),),
+        body: const SingleChildScrollView(
+          child: Center(child: Text("Exchanger"),
+          ),),
 
         bottomNavigationBar: const BottomCustomBar(),
       ),
