@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
-import '../../logic/conect_db.dart';
+import '../../logic/connect_db.dart';
+import 'calculator_logic.dart';
 import 'input_output_field.dart';
 import 'all_btns.dart';
 
@@ -14,17 +15,19 @@ class CalculatorScreen extends StatefulWidget {
 }
 
 class CalculatorScreenState extends State<CalculatorScreen> {
-  String numbers = '0';
+  MathCalculator calc = MathCalculator();
   DataBase db = DataBase();
 
   @override
   void initState() {
-    // TODO: implement initState
+    setNumbers();
     super.initState();
   }
   void setNumbers () async {
-    String numb = await db.getNumber();
-    numbers = numb;
+    calc.line = await db.getNumber();
+    calc.mathSight = await db.getMathSight();
+    calc.minus = await db.getMinus();
+    setState(() {});
   }
 
   @override
@@ -43,54 +46,54 @@ class CalculatorScreenState extends State<CalculatorScreen> {
                 Container(height: 1,
                   color: const Color.fromARGB(250, 194, 176, 176),),
                 const SizedBox(height: 10,),
-                InputOutputField(line: numbers,),
+                InputOutputField(calc: calc,),
                 const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomCalcBtn(calcBtnText: 'C',),
+                    CustomCalcBtn(calcBtnText: 'C', onTap: () async {calc = await clearBtn(calc); setState(() {});},),
                     CustomCalcBtn(calcBtnText: '%',),
-                    CustomCalcBtn(calcBtnText: '±',),
-                    CustomCalcBtn(calcBtnText: '/',),
+                    CustomCalcBtn(calcBtnText: '±', onTap: () async {calc = await changeMinus(calc); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '÷', onTap: () async {calc = await changeSight(calc, '÷'); setState(() {});},),
                   ],
                 ),
                 const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomCalcBtn(calcBtnText: '7',),
-                    CustomCalcBtn(calcBtnText: '8',),
-                    CustomCalcBtn(calcBtnText: '9',),
-                    CustomCalcBtn(calcBtnText: 'x',),
+                    CustomCalcBtn(calcBtnText: '7', onTap: () async {calc.line = await saveBtn("7"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '8', onTap: () async {calc.line = await saveBtn("8"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '9', onTap: () async {calc.line = await saveBtn("9"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: 'x', onTap: () async {calc = await changeSight(calc, 'x'); setState(() {});},),
                   ],
                 ),
                 const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomCalcBtn(calcBtnText: '4',),
-                    CustomCalcBtn(calcBtnText: '5',),
-                    CustomCalcBtn(calcBtnText: '6',),
-                    CustomCalcBtn(calcBtnText: '-',),
+                    CustomCalcBtn(calcBtnText: '4', onTap: () async {calc.line = await saveBtn("4"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '5', onTap: () async {calc.line = await saveBtn("5"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '6', onTap: () async {calc.line = await saveBtn("6"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '-', onTap: () async {calc = await changeSight(calc, '-'); setState(() {});},),
                   ],
                 ),
                 const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomCalcBtn(calcBtnText: '1',),
-                    CustomCalcBtn(calcBtnText: '2',),
-                    CustomCalcBtn(calcBtnText: '3',),
-                    CustomCalcBtn(calcBtnText: '+',),
+                    CustomCalcBtn(calcBtnText: '1', onTap: () async {calc.line = await saveBtn("1"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '2', onTap: () async {calc.line = await saveBtn("2"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '3', onTap: () async {calc.line = await saveBtn("3"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '+', onTap: () async {calc = await changeSight(calc, '+'); setState(() {});},),
                   ],
                 ),
                 const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomCalcBtn(calcBtnText: '0',),
-                    CustomCalcBtn(calcBtnText: ',',),
-                    const BtnDeleteLust(),
+                    CustomCalcBtn(calcBtnText: '0', onTap: () async {calc.line = await saveBtn("0"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: ',', onTap: () async {calc.line = await addPoint(); setState(() {});},),
+                    BtnDeleteLust(onTap: () async {calc = await deleteLustBtn(calc); setState(() {});},),
                     const ReturnToMain(),
                   ],
                 ),

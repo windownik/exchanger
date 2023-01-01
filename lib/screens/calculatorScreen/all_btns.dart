@@ -2,29 +2,29 @@
 
 import 'package:flutter/material.dart';
 
-import '../../logic/conect_db.dart';
 
 class CustomCalcBtn extends StatefulWidget {
   String btnText = '1';
-
-  CustomCalcBtn({required String calcBtnText}) {
+  final GestureTapCallback? onTap;
+  CustomCalcBtn({required String calcBtnText, this.onTap}) {
     btnText = calcBtnText;
   }
 
   @override
   State<StatefulWidget> createState() {
-    return CustomCalcBtnState(calcBtnText: btnText);
+    return CustomCalcBtnState(calcBtnText: btnText, onTap: onTap);
   }
 }
 
 class CustomCalcBtnState extends State<CustomCalcBtn> {
-  DataBase db = DataBase();
-
-  CustomCalcBtnState({required String calcBtnText}) {
+  final GestureTapCallback? onTap;
+  CustomCalcBtnState({this.onTap, required String calcBtnText}) {
     btnText = calcBtnText;
   }
 
   String btnText = '1';
+
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -54,13 +54,15 @@ class CustomCalcBtnState extends State<CustomCalcBtn> {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(10),
-              onTap: () async {
-
-                String numbers = await db.getNumber();
-                await db.setNumber("$numbers$btnText");
-                print([btnText, numbers]);
-                setState(() {});
-              },
+              onTap: onTap
+              //     () async {
+              //
+              //   String numbers = await db.getNumber();
+              //   await db.setNumber("$numbers$btnText");
+              //   numbers = await db.getNumber();
+              //   print([btnText, numbers]);
+              //   setState(() {});
+              // },
             ),
           ),
         )
@@ -111,7 +113,9 @@ class BtnClear extends StatelessWidget {
 }
 
 class BtnDeleteLust extends StatelessWidget {
-  const BtnDeleteLust({super.key});
+  final GestureTapCallback? onTap;
+  const BtnDeleteLust({super.key, this.onTap});
+
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +139,7 @@ class BtnDeleteLust extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(10),
-              onTap: () {},
+              onTap: onTap,
             ),
           ),
         )
