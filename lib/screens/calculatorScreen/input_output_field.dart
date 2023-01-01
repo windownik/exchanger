@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 
 class InputOutputField extends StatelessWidget {
-  const InputOutputField({super.key});
+  String _line = '';
+  InputOutputField({super.key, required String line}) {
+    _line = line;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +16,10 @@ class InputOutputField extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       height: 100,
+      width: double.infinity,
+      alignment: Alignment.centerRight,
+      child: Text(_line,
+        style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w500),),
     );
   }
 }

@@ -2,12 +2,29 @@
 
 import 'package:flutter/material.dart';
 
-class CustomCalcBtn extends StatelessWidget {
+import '../../logic/conect_db.dart';
+
+class CustomCalcBtn extends StatefulWidget {
   String btnText = '1';
-  CustomCalcBtn({super.key, required String calcBtnText}) {
+
+  CustomCalcBtn({required String calcBtnText}) {
     btnText = calcBtnText;
   }
 
+  @override
+  State<StatefulWidget> createState() {
+    return CustomCalcBtnState(calcBtnText: btnText);
+  }
+}
+
+class CustomCalcBtnState extends State<CustomCalcBtn> {
+  DataBase db = DataBase();
+
+  CustomCalcBtnState({required String calcBtnText}) {
+    btnText = calcBtnText;
+  }
+
+  String btnText = '1';
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -37,7 +54,13 @@ class CustomCalcBtn extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(10),
-              onTap: () {},
+              onTap: () async {
+
+                String numbers = await db.getNumber();
+                await db.setNumber("$numbers$btnText");
+                print([btnText, numbers]);
+                setState(() {});
+              },
             ),
           ),
         )

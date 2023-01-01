@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import '../../logic/conect_db.dart';
 import 'input_output_field.dart';
 import 'all_btns.dart';
 
@@ -13,6 +14,19 @@ class CalculatorScreen extends StatefulWidget {
 }
 
 class CalculatorScreenState extends State<CalculatorScreen> {
+  String numbers = '0';
+  DataBase db = DataBase();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+  void setNumbers () async {
+    String numb = await db.getNumber();
+    numbers = numb;
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
@@ -29,7 +43,7 @@ class CalculatorScreenState extends State<CalculatorScreen> {
                 Container(height: 1,
                   color: const Color.fromARGB(250, 194, 176, 176),),
                 const SizedBox(height: 10,),
-                const InputOutputField(),
+                InputOutputField(line: numbers,),
                 const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
