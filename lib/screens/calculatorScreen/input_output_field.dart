@@ -25,24 +25,14 @@ class InputOutputField extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             const SizedBox(width: 5,),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-              Container(width: 40,
-                alignment: Alignment.center,
-                child: Text(_calc.minus,
-                  style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w500),),),
-              Container(width: 40,
-                alignment: Alignment.center,
-                child: _calc.mathSight == '' ? Text(_calc.mathSight,
-                  style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w500),) : MathContainer(math: _calc.mathSight,)
-
-              ),
-            ],),
+            Container(width: 40,
+              alignment: Alignment.center,
+              child: _calc.mathSight == '' ? Text(_calc.mathSight, style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w500),) : MathContainer(math: _calc.mathSight,)
+            ),
 
         Container(width: Get.width-65,
         alignment: Alignment.centerRight,
-        child: Text(_calc.line,
+        child: Text(getNumbFromCalc(_calc),
         style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w500),),)
       ])
     );
@@ -72,8 +62,22 @@ class MathContainer extends StatelessWidget {
   }
 }
 
+String getNumbFromCalc (MathCalculator calc) {
+  String returnText = "0";
+  if (calc.state == 'num1' || calc.state == 'math') {
+    returnText = calc.minus == '-' ? "-${calc.line}" : calc.line;
+  } else {
+    returnText = calc.minusSecond == '-' ? "-${calc.lineSecond}" : calc.lineSecond;
+  }
+
+  return returnText;
+}
+
 class MathCalculator {
   String line = '0';
+  String lineSecond = '0';
   String mathSight = '';
   String minus = '';
+  String minusSecond = '';
+  String state = 'num1';
 }

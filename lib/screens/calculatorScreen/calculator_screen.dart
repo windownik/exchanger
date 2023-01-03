@@ -51,50 +51,70 @@ class CalculatorScreenState extends State<CalculatorScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomCalcBtn(calcBtnText: 'C', onTap: () async {calc = await clearBtn(calc); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: 'AC', onTap: () async {
+                      if (calc.state == "num1" && calc.line != '0') {
+                        calc.line = '0';
+                      } else if (calc.state == "num2" && calc.lineSecond != '0') {
+                        calc.lineSecond = '0';
+                      } else {
+                        calc = await clearBtn(calc);
+                      }
+                      setState(() {});
+                      },),
                     CustomCalcBtn(calcBtnText: '%',),
                     CustomCalcBtn(calcBtnText: '±', onTap: () async {calc = await changeMinus(calc); setState(() {});},),
-                    CustomCalcBtn(calcBtnText: '÷', onTap: () async {calc = await changeSight(calc, '÷'); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '÷', onTap: () {calc = changeSight(calc, '÷'); setState(() {});},),
                   ],
                 ),
                 const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomCalcBtn(calcBtnText: '7', onTap: () async {calc.line = await saveBtn("7"); setState(() {});},),
-                    CustomCalcBtn(calcBtnText: '8', onTap: () async {calc.line = await saveBtn("8"); setState(() {});},),
-                    CustomCalcBtn(calcBtnText: '9', onTap: () async {calc.line = await saveBtn("9"); setState(() {});},),
-                    CustomCalcBtn(calcBtnText: 'x', onTap: () async {calc = await changeSight(calc, 'x'); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '7', onTap: () {calc = saveBtn(calc, "7"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '8', onTap: () {calc = saveBtn(calc, "8"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '9', onTap: () {calc = saveBtn(calc, "9"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: 'x', onTap: () {calc = changeSight(calc, 'x'); setState(() {});},),
                   ],
                 ),
                 const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomCalcBtn(calcBtnText: '4', onTap: () async {calc.line = await saveBtn("4"); setState(() {});},),
-                    CustomCalcBtn(calcBtnText: '5', onTap: () async {calc.line = await saveBtn("5"); setState(() {});},),
-                    CustomCalcBtn(calcBtnText: '6', onTap: () async {calc.line = await saveBtn("6"); setState(() {});},),
-                    CustomCalcBtn(calcBtnText: '-', onTap: () async {calc = await changeSight(calc, '-'); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '4', onTap: () {calc = saveBtn(calc, "4"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '5', onTap: () {calc = saveBtn(calc, "5"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '6', onTap: () {calc = saveBtn(calc, "6"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '-', onTap: () {calc = changeSight(calc, '-'); setState(() {});},),
                   ],
                 ),
                 const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomCalcBtn(calcBtnText: '1', onTap: () async {calc.line = await saveBtn("1"); setState(() {});},),
-                    CustomCalcBtn(calcBtnText: '2', onTap: () async {calc.line = await saveBtn("2"); setState(() {});},),
-                    CustomCalcBtn(calcBtnText: '3', onTap: () async {calc.line = await saveBtn("3"); setState(() {});},),
-                    CustomCalcBtn(calcBtnText: '+', onTap: () async {calc = await changeSight(calc, '+'); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '1', onTap: () {calc = saveBtn(calc, "1"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '2', onTap: () {calc = saveBtn(calc, "2"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '3', onTap: () {calc = saveBtn(calc, "3"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '+', onTap: () {calc = changeSight(calc, '+'); setState(() {});},),
                   ],
                 ),
                 const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomCalcBtn(calcBtnText: '0', onTap: () async {calc.line = await saveBtn("0"); setState(() {});},),
-                    CustomCalcBtn(calcBtnText: ',', onTap: () async {calc.line = await addPoint(); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: '0', onTap: () {calc = saveBtn(calc, "0"); setState(() {});},),
+                    CustomCalcBtn(calcBtnText: ',', onTap: () {calc = addPoint(calc); setState(() {});},),
                     BtnDeleteLust(onTap: () async {calc = await deleteLustBtn(calc); setState(() {});},),
-                    const ReturnToMain(),
+                    ReturnToMain(
+                      equal: calc.state == "num2" ? true : false,
+                      onTap: () {
+                      if (calc.state == 'num2') {
+                        calc = equalMath(calc);
+                        calc.state = "num1";
+                        calc.mathSight = "";
+                        setState(() {});
+                      } else {
+                        Navigator.pushNamed(context, "/");
+                      }
+                    },),
                   ],
                 ),
               ],

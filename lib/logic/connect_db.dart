@@ -24,6 +24,16 @@ class DataBase {
     return number;
   }
 
+  Future<String> getNumber2() async {
+    final storage = await _storage;
+    final number = storage.getString("number_line_2");
+    if (number == null) {
+      return '';
+    }
+    return number;
+  }
+
+
   Future<String> getMinus() async {
     final storage = await _storage;
     final minus = storage.getString("minus");
@@ -31,6 +41,15 @@ class DataBase {
       return '';
     }
     return minus;
+  }
+
+  Future<String> getState() async {
+    final storage = await _storage;
+    final state = storage.getString("state");
+    if (state == null) {
+      return '';
+    }
+    return state;
   }
 
   Future<void> setMathSight(String math) async {
@@ -43,9 +62,18 @@ class DataBase {
     storage.setString("number_line", number);
   }
 
+  Future<void> setNumber2(String number) async {
+    final storage = await _storage;
+    storage.setString("number_line_2", number);
+  }
+
   Future<void> setMinus(String minus) async {
     final storage = await _storage;
     storage.setString("minus", minus);
   }
 
+  Future<void> setState(String state) async {
+    final storage = await _storage;
+    storage.setString("state", state);
+  }
 }

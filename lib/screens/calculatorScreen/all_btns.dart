@@ -150,10 +150,25 @@ class BtnDeleteLust extends StatelessWidget {
 
 
 class ReturnToMain extends StatelessWidget {
-  const ReturnToMain({super.key});
+  final GestureTapCallback? onTap;
+  bool equal;
+
+  ReturnToMain({super.key, this.onTap, this.equal = false});
+  @override
+//   State<StatefulWidget> createState() {
+//     return ReturnToMainState(onTap: onTap, equal: equal);
+//   }
+// }
+//
+// class ReturnToMainState extends State<ReturnToMain>{
+//   final GestureTapCallback? onTap;
+//   bool equal;
+//
+//   ReturnToMainState({this.onTap, this.equal = false});
 
   @override
   Widget build(BuildContext context) {
+
     return Stack(
       children: [
         Container(
@@ -163,8 +178,8 @@ class ReturnToMain extends StatelessWidget {
             color: const Color.fromRGBO(208, 101, 36, 1.0),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Center(
-            child: Text("OK")
+          child: Center(
+            child: equal == true ? const Text("=") : const Text("OK")
           ),
         ),
         SizedBox(
@@ -174,9 +189,7 @@ class ReturnToMain extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(10),
-              onTap: () {
-                Navigator.pushNamed(context, '/');
-              },
+              onTap: onTap,
             ),
           ),
         )
