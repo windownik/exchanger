@@ -1,8 +1,6 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 
 class InputOutputField extends StatelessWidget {
@@ -14,26 +12,29 @@ class InputOutputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.only(right: 12, left: 12),
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(131, 179, 177, 1.0),
-        borderRadius: BorderRadius.circular(10),
+        color: const Color.fromRGBO(228, 255, 255, 1.0),
+        borderRadius: BorderRadius.circular(8),
       ),
-      height: 100,
-      width: Get.width,
+      height: 138,
       alignment: Alignment.centerRight,
       child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const SizedBox(width: 5,),
+            // const SizedBox(width: 5,),
             Container(width: 40,
               alignment: Alignment.center,
-              child: _calc.mathSight == '' ? Text(_calc.mathSight, style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w500),) : MathContainer(math: _calc.mathSight,)
+              child: _calc.mathSight == '' ? Text(_calc.mathSight,
+                style: const TextStyle(fontSize: 40,
+                    fontWeight: FontWeight.w500,
+                    color: Color.fromRGBO(77, 77, 77, 1)),) : MathContainer(math: _calc.mathSight,)
             ),
 
-        Container(width: Get.width-65,
-        alignment: Alignment.centerRight,
+        Container(
+          alignment: Alignment.centerRight,
         child: Text(getNumbFromCalc(_calc),
-        style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w500),),)
+        style: const TextStyle(fontSize: 49, fontWeight: FontWeight.w500, color: Color.fromRGBO(77, 77, 77, 1)), ),)
       ])
     );
   }
@@ -49,12 +50,6 @@ class MathContainer extends StatelessWidget {
     return Container(
       height: 40,
       width: 40,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(3),
-        border: Border.all(
-          color: Colors.black
-        )
-      ),
       alignment: Alignment.center,
       child: Text(mathSight,
         style: const TextStyle(fontSize: 35, fontWeight: FontWeight.w500),),
@@ -64,12 +59,11 @@ class MathContainer extends StatelessWidget {
 
 String getNumbFromCalc (MathCalculator calc) {
   String returnText = "0";
-  if (calc.state == 'num1' || calc.state == 'math') {
+  if (calc.state == 'num1' || calc.state == 'math' || calc.state == 'equal') {
     returnText = calc.minus == '-' ? "-${calc.line}" : calc.line;
   } else {
     returnText = calc.minusSecond == '-' ? "-${calc.lineSecond}" : calc.lineSecond;
   }
-
   return returnText;
 }
 

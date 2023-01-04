@@ -11,6 +11,9 @@ MathCalculator saveBtn(MathCalculator calc, String btnText) {
     calc.lineSecond = btnText;
   } else if (calc.state == 'num2') {
     calc.lineSecond = "${calc.lineSecond}$btnText";
+  } else if (calc.state == 'equal') {
+    calc.state = 'num1';
+    calc.line = btnText;
   } else {
     if (calc.line.startsWith('0,')) {
     calc.line = "${calc.line}$btnText";
@@ -109,6 +112,9 @@ MathCalculator changeSight(MathCalculator calc, String sight) {
   } else if (calc.state == "num2") {
     calc = equalMath(calc);
     calc.mathSight = sight;
+  } else if (calc.state == "equal") {
+    calc.mathSight = sight;
+    calc.state = "math";
   }
   return calc;
 }

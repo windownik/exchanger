@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../../logic/curs.dart';
+
 class BottomCustomBar extends StatefulWidget{
   const BottomCustomBar({super.key});
 
@@ -164,7 +166,9 @@ class BtnReload extends StatelessWidget{
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(10),
-              onTap: () {},
+              onTap: () async {
+                await getCryptoCurs();
+              },
             ),
           ),)
       ],);
