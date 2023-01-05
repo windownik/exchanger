@@ -16,6 +16,7 @@ class CalculatorScreen extends StatefulWidget {
 class CalculatorScreenState extends State<CalculatorScreen> {
   MathCalculator calc = MathCalculator();
   DataBase db = DataBase();
+  bool pressToMain = false;
 
   @override
   void initState() {
@@ -249,14 +250,28 @@ class CalculatorScreenState extends State<CalculatorScreen> {
                             },
                           ),
                           ReturnToMain(
+                            press: pressToMain,
                             equal: calc.state == "num2" ? true : false,
-                            onTap: () {
+                            onTapDown: (a) {
+                              pressToMain = true;
+                              setState(() { });
+                            },
+                            onTapUp: (a) {
+                              pressToMain = false;
+                              setState(() { });
+                            },
+                            onTapCancel: () {
+                              pressToMain = false;
+                              setState(() { });
+                            },
+                            onTap: () async {
                               if (calc.state == 'num2') {
                                 calc = equalMath(calc);
                                 calc.state = "equal";
                                 calc.mathSight = "";
                                 setState(() {});
                               } else {
+                                await db.setNumber(calc.line);
                                 Navigator.pushNamed(context, "/");
                               }
                             },

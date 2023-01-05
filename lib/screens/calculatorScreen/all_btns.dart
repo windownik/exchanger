@@ -227,25 +227,18 @@ class BtnDeleteLustState extends State<BtnDeleteLust> {
 }
 
 
-class ReturnToMain extends StatefulWidget {
+class ReturnToMain extends StatelessWidget {
   final GestureTapCallback? onTap;
-  bool equal;
-
-  ReturnToMain({super.key, this.onTap, this.equal = false});
-  @override
-  State<StatefulWidget> createState() {
-    return ReturnToMainState(onTap: onTap, equal: equal);
-  }
-
-}
-
-class ReturnToMainState extends State<ReturnToMain>{
-  final GestureTapCallback? onTap;
+  final GestureTapDownCallback? onTapDown;
+  final GestureTapUpCallback? onTapUp;
+  final GestureTapCancelCallback? onTapCancel;
   bool equal;
   bool press = false;
   Color pressColor = const Color.fromRGBO(171, 234, 255, 1.0);
 
-  ReturnToMainState({this.onTap, this.equal = false});
+  ReturnToMain({super.key, this.onTap, this.equal = false, this.onTapDown,
+    this.onTapUp, this.onTapCancel, this.press = false});
+
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +273,7 @@ class ReturnToMainState extends State<ReturnToMain>{
           height: 60,
           width: 80,
           child: Center(
-            child: equal == true ? const Text("=", style: TextStyle(fontSize: 39),) :
+            child: equal == true ? const Text("=", style: TextStyle(fontSize: 39, color: Color.fromRGBO(171, 234, 255, 1.0)),) :
             SvgPicture.asset("assets/svg/back.svg", height: 20,)
           ),
         ),
@@ -290,18 +283,9 @@ class ReturnToMainState extends State<ReturnToMain>{
           child: Material(
             color: Colors.transparent,
             child: GestureDetector(
-                onTapDown: (a) {
-                  press = true;
-                  setState(() { });
-                },
-                onTapUp: (a) {
-                  press = false;
-                  setState(() { });
-                },
-                onTapCancel: () {
-                  press = false;
-                  setState(() { });
-                },
+                onTapDown: onTapDown,
+                onTapUp: onTapUp,
+                onTapCancel: onTapCancel,
                 onTap: onTap
             ),
           ),
