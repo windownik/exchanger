@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 List<String> symbols = ["BTCUSDT",];
@@ -31,4 +33,9 @@ Future<void> getMosCurs () async {
   for (var resp in resSales) {
     i += 1;
   }
+}
+Future<List<dynamic>> getAllCurrency () async {
+  final String file = await rootBundle.loadString("assets/currency/currency.json");
+  final data = await json.decode(file);
+  return data;
 }

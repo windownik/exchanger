@@ -3,17 +3,19 @@
 import 'package:flutter/material.dart';
 
 class CustomAppBarMain extends StatelessWidget implements PreferredSizeWidget{
-  const CustomAppBarMain({super.key});
+  VoidCallback onPressedSettings;
+  CustomAppBarMain({super.key, required this.onPressedSettings});
 
 
   @override
   Widget build(BuildContext context) {
+
     return AppBar(
       leading: IconButton(onPressed: () { },
         icon: const Icon(Icons.menu),
       ),
       actions: [
-        IconButton(onPressed: () {  },
+        IconButton(onPressed: onPressedSettings,
           icon: const Icon(Icons.settings),
         ),
       ],

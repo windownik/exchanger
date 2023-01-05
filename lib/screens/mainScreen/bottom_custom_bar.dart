@@ -218,7 +218,8 @@ class BtnReload extends StatelessWidget{
             child: InkWell(
               borderRadius: BorderRadius.circular(10),
               onTap: () async {
-                await getCryptoCurs();
+                await getAllCurrency();
+                // await getCryptoCurs();
               },
             ),
           ),)
