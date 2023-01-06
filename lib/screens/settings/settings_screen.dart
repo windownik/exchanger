@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../logic/currency.dart';
+
 class CustomSettings extends StatefulWidget {
   const CustomSettings({super.key});
 
@@ -88,6 +90,7 @@ class CustomSettingsState extends State<CustomSettings> {
             ),
           ),
           const SizedBox(height: 20,),
+          CustomCurrencyCard(),
           // ListView.builder(itemBuilder: itemBuilder)
         ],
       ),
