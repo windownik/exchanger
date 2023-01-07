@@ -52,6 +52,15 @@ class DataBase {
     return state;
   }
 
+  Future<String> getAllCurs() async {
+    final storage = await _storage;
+    final curs = storage.getString("curs");
+    if (curs == null) {
+      return '';
+    }
+    return curs;
+  }
+
   Future<void> setMathSight(String math) async {
     final storage = await _storage;
     storage.setString("math_sight", math);
@@ -75,5 +84,10 @@ class DataBase {
   Future<void> setState(String state) async {
     final storage = await _storage;
     storage.setString("state", state);
+  }
+
+  Future<void> setAllCurs(String curs) async {
+    final storage = await _storage;
+    storage.setString("curs", curs);
   }
 }

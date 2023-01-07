@@ -1,21 +1,26 @@
 
+import 'package:exchanger/logic/connect_db.dart';
 import 'package:flutter/material.dart';
 
-import '../../logic/curs.dart';
 import '../../logic/main_screen_logic.dart';
 
 class BottomCustomBar extends StatefulWidget{
   final MainScreenLogic? logic;
-  const BottomCustomBar({super.key, this.logic});
+  GestureTapCallback onTap;
+  BottomCustomBar({super.key, this.logic, required this.onTap});
 
   @override
   State<StatefulWidget> createState() {
-    return BottomCustomBarState();
+    return BottomCustomBarState(onTap: onTap);
   }
 }
 
 
 class BottomCustomBarState extends State<BottomCustomBar>{
+  GestureTapCallback onTap;
+
+  BottomCustomBarState({required this.onTap});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +40,7 @@ class BottomCustomBarState extends State<BottomCustomBar>{
           color: const Color.fromRGBO(171, 234, 255, 1),
         )
         ),
-        const CustomRow()
+        CustomRow(onTap: onTap,)
       ])
     );
   }
@@ -43,7 +48,8 @@ class BottomCustomBarState extends State<BottomCustomBar>{
 
 
 class CustomRow extends StatelessWidget{
-  const CustomRow({super.key});
+  GestureTapCallback onTap;
+  CustomRow({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +58,11 @@ class CustomRow extends StatelessWidget{
       children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            BtnClear(),
-            BtnReload(),
-            OpenCalculator(),
-            SizedBox(height: 20,)
+          children: [
+            const BtnClear(),
+            BtnReload(onTap: onTap,),
+            const OpenCalculator(),
+            const SizedBox(height: 20,)
           ],),
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -197,8 +203,9 @@ class BtnClear extends StatelessWidget{
 }
 
 class BtnReload extends StatelessWidget{
-
-  const BtnReload({super.key});
+  DataBase db = DataBase();
+  GestureTapCallback onTap;
+  BtnReload({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -221,10 +228,11 @@ class BtnReload extends StatelessWidget{
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(10),
-              onTap: () async {
-                await getAllCurrency();
-                // await getCryptoCurs();
-              },
+              onTap: onTap
+              //     () async {
+              //   String allCurs = await getMosCurs();
+              //   await db.setAllCurs(allCurs);
+              // },
             ),
           ),)
       ],);

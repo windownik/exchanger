@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 
 class MoneyCard extends StatelessWidget {
-  int _index = 0;
-  int number = 0;
-  MoneyCard({super.key, required int index, required this.number}) {
-    _index = index;
-  }
+  String currencyName;
+  String number;
+  String imgPath;
+  MoneyCard({super.key, required this.currencyName, required this.number, required this.imgPath});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 34,
       margin: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-      // decoration: BoxDecoration(
-      //   color: const Color.fromRGBO(238, 116, 116, 1.0),
-      //   borderRadius: BorderRadius.circular(10),
-      // ),
+
       child: Stack(
         children: [
           Positioned(
@@ -30,10 +26,27 @@ class MoneyCard extends StatelessWidget {
                   color: const Color.fromRGBO(24, 160, 163, 1),
                 ),
                 alignment: Alignment.center,
-                child: Text(
-                  "Элемент №$_index",
-                  style: const TextStyle(color: Colors.white),
-                )),
+                child: Row(
+                  children: [
+                    const SizedBox(width: 9,),
+                    Container(
+                      width: 26,
+                      height: 26,
+                      decoration: BoxDecoration(
+                          color: Colors.orange,
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              image: AssetImage("assets/flags/$imgPath"),
+                              fit: BoxFit.cover)),
+                    ),
+                    const SizedBox(width: 30,),
+                    Text(
+                      currencyName,
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  ],
+                )
+            ),
           ),
           Positioned(
               right: 0,
@@ -46,7 +59,7 @@ class MoneyCard extends StatelessWidget {
           Positioned(
             right: 0,
             bottom: 8,
-            child: Text(number.toString(),
+            child: Text(number,
                 style: const TextStyle(color: Colors.white)),
           )
         ],
