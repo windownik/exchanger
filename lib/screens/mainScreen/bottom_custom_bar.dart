@@ -56,6 +56,7 @@ class CustomRow extends StatelessWidget{
             BtnClear(),
             BtnReload(),
             OpenCalculator(),
+            SizedBox(height: 20,)
           ],),
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -64,6 +65,7 @@ class CustomRow extends StatelessWidget{
           CustomCalcBtn(calcBtnText: '4',),
           CustomCalcBtn(calcBtnText: '1',),
             CustomCalcBtn(calcBtnText: '0',),
+            const SizedBox(height: 20,)
         ],),
         Column(mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -71,6 +73,7 @@ class CustomRow extends StatelessWidget{
           CustomCalcBtn(calcBtnText: '5',),
           CustomCalcBtn(calcBtnText: '2',),
             CustomCalcBtn(calcBtnText: ',',),
+            const SizedBox(height: 20,)
         ],),
         Column(mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -78,6 +81,7 @@ class CustomRow extends StatelessWidget{
           CustomCalcBtn(calcBtnText: '6',),
           CustomCalcBtn(calcBtnText: '3',),
             CustomCalcBtn(calcBtnText: '<',),
+            const SizedBox(height: 20,)
         ],)
 
       ],
@@ -168,7 +172,7 @@ class BtnClear extends StatelessWidget{
           height: 40,
           width: 80,
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(200, 100, 150, 1.0),
+            // color: const Color.fromRGBO(200, 100, 150, 1.0),
             borderRadius: BorderRadius.circular(10),
           ),
           child: const Center(child: Text("AC",
@@ -204,7 +208,7 @@ class BtnReload extends StatelessWidget{
           height: 40,
           width: 80,
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(142, 133, 167, 1.0),
+            // color: const Color.fromRGBO(142, 133, 167, 1.0),
             borderRadius: BorderRadius.circular(10),
           ),
           child: const Center(child: Icon(Icons.refresh, color: Color.fromRGBO(171, 234, 255, 1.0),),
@@ -238,7 +242,7 @@ class OpenCalculator extends StatelessWidget{
           height: 110,
           width: 80,
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(208, 101, 36, 1.0),
+            // color: const Color.fromRGBO(208, 101, 36, 1.0),
             borderRadius: BorderRadius.circular(10),
           ),
           child: const Center(child: Icon(Icons.calculate_outlined, size: 60, color: Color.fromRGBO(171, 234, 255, 1.0),),
