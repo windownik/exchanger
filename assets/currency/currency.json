@@ -2,168 +2,207 @@
 
 [
   {
-    "sight": "AUD",
-    "flag": "au.png",
-    "major": "RUB"
-  },
-  {
-    "sight": "AZN",
-    "flag": "az.png",
-    "major": "RUB"
-  },
-  {
-    "sight": "GBP",
-    "flag": "gb.png",
-    "major": "RUB"
-  },
-  {
-    "sight": "AMD",
-    "flag": "am.png",
-    "major": "RUB"
-  },
-  {
-    "sight": "BYN",
-    "flag": "by.png",
-    "major": "RUB"
-  },
-  {
-    "sight": "BGN",
-    "flag": "bg.png",
-    "major": "RUB"
-  },
-  {
-    "sight": "BRL",
-    "flag": "br.png",
-    "major": "RUB"
-  },
-  {
-    "sight": "HUF",
-    "flag": "hu.png",
-    "major": "RUB"
-  },
-  {
-    "sight": "HKD",
-    "flag": "hk.png",
-    "major": "RUB"
-  },
-  {
-    "sight": "DKK",
-    "flag": "dk.png",
-    "major": "RUB"
-  },
-  {
     "sight": "USD",
     "flag": "us.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "U.S. dollar"
   },
   {
     "sight": "EUR",
     "flag": "eur.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Euro"
+  },
+  {
+    "sight": "AUD",
+    "flag": "au.png",
+    "major": "RUB",
+    "desc": "Australian dollar"
+  },
+  {
+    "sight": "AZN",
+    "flag": "az.png",
+    "major": "RUB",
+    "desc": "Azerbaijani manat"
+  },
+  {
+    "sight": "GBP",
+    "flag": "gb.png",
+    "major": "RUB",
+    "desc": "British pound"
+  },
+  {
+    "sight": "AMD",
+    "flag": "am.png",
+    "major": "RUB",
+    "desc": "Armenian dram"
+  },
+  {
+    "sight": "BYN",
+    "flag": "by.png",
+    "major": "RUB",
+    "desc": "Belarusian ruble"
+  },
+  {
+    "sight": "BGN",
+    "flag": "bg.png",
+    "major": "RUB",
+    "desc": "Bulgarian Lev"
+  },
+  {
+    "sight": "BRL",
+    "flag": "br.png",
+    "major": "RUB",
+    "desc": "Brazilian Real"
+  },
+  {
+    "sight": "HUF",
+    "flag": "hu.png",
+    "major": "RUB",
+    "desc": "Hungarian forints"
+  },
+  {
+    "sight": "HKD",
+    "flag": "hk.png",
+    "major": "RUB",
+    "desc": "Hong Kong dollars"
+  },
+  {
+    "sight": "DKK",
+    "flag": "dk.png",
+    "major": "RUB",
+    "desc": "Danish krone"
   },
   {
     "sight": "INR",
     "flag": "in.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Indian rupees"
   },
   {
     "sight": "KZT",
     "flag": "kz.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Kazakhstani tenge"
   },
   {
     "sight": "CAD",
     "flag": "ca.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Canadian dollar"
   },
   {
     "sight": "KGS",
     "flag": "kg.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Kyrgyzstani som"
   },
   {
     "sight": "CNY",
     "flag": "cn.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Chinese yuan"
   },
   {
     "sight": "MDL",
     "flag": "md.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Moldovan lei"
   },
   {
     "sight": "NOK",
     "flag": "no.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Norwegian kroner"
   },
   {
     "sight": "PLN",
     "flag": "pl.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Polish zloty"
   },
   {
     "sight": "RON",
     "flag": "ro.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Romanian leu"
+  },
+  {
+    "sight": "RUB",
+    "flag": "ru.png",
+    "major": "RUB",
+    "desc": "Russian ruble"
   },
   {
     "sight": "SGD",
     "flag": "sg.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Singapore dollar"
   },
   {
     "sight": "TJS",
     "flag": "tj.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Tajik somoni"
   },
   {
     "sight": "TRY",
     "flag": "tr.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Turkish Lira"
   },
   {
     "sight": "TMT",
     "flag": "tm.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "New Turkmen manat"
   },
   {
     "sight": "UZS",
     "flag": "uz.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Uzbek sum"
   },
   {
     "sight": "UAH",
     "flag": "ua.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Ukrainian hryvnia"
   },
   {
     "sight": "CZK",
     "flag": "cz.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Czech crowns"
   },
   {
     "sight": "SEK",
     "flag": "se.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Swedish krona"
   },
   {
     "sight": "CHF",
     "flag": "ch.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "Swiss frank"
   },
   {
     "sight": "ZAR",
     "flag": "za.png",
-    "major": "RUB"
+    "major": "RUB",
+    "desc": "South African rand"
   },
   {
     "sight": "KRW",
     "flag": "kr.png",
-    "major": "RUB"
-  },  {
+    "major": "RUB",
+    "desc": "Korean Won"
+  },
+  {
   "sight": "JPY",
   "flag": "jp.png",
-  "major": "RUB"
+  "major": "RUB",
+    "desc": "Japanese yen"
 }
-
 ]

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../logic/currency.dart';
+import '../../logic/curs.dart';
 
 class CustomSettings extends StatefulWidget {
   const CustomSettings({super.key});
@@ -13,6 +14,18 @@ class CustomSettings extends StatefulWidget {
 }
 
 class CustomSettingsState extends State<CustomSettings> {
+  List<dynamic> currency = [];
+  @override
+  void initState() {
+    getCurrensy();
+    super.initState();
+  }
+
+  void getCurrensy() async {
+    currency = await getAllCurrency();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -90,8 +103,20 @@ class CustomSettingsState extends State<CustomSettings> {
             ),
           ),
           const SizedBox(height: 20,),
-          CustomCurrencyCard(),
-          // ListView.builder(itemBuilder: itemBuilder)
+          currency.isNotEmpty ?
+          Flexible(child: ListView.builder(
+              itemCount: currency.length,
+              itemBuilder: (BuildContext context, int index) {
+                String imgPath = currency[index]['flag'];
+                String currencyShort = currency[index]['sight'];
+                String currencyDesc = currency[index]['desc'];
+                return CustomCurrencyCard(imgPath: imgPath,
+                  currencyShort: currencyShort, currencyDesc: currencyDesc,);
+
+              })
+            ) : const Text("Loading...")
+
+
         ],
       ),
     );
