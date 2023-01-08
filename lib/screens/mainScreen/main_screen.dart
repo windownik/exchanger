@@ -6,7 +6,6 @@ import 'package:exchanger/logic/connect_db.dart';
 import 'package:flutter/material.dart';
 
 import '../../logic/curs.dart';
-import '../../logic/main_screen_logic.dart';
 import '../settings/settings_screen.dart';
 import 'bottom_custom_bar.dart';
 import 'custom_app_bar_main.dart';
@@ -23,14 +22,15 @@ class StartScreen extends StatefulWidget{
 
 
 class StartScreenState extends State<StartScreen>{
-
-  List<dynamic> currency = [];
+  List<String> myCurrency = ["USD", "RUB"];
+  List<dynamic> currency = ["USD"];
   Map<String, dynamic> actualCurs = {};
 
   DataBase db = DataBase();
   @override
   void initState() {
     getCurrensy();
+    getMyCurrency();
     super.initState();
   }
 
@@ -46,8 +46,11 @@ class StartScreenState extends State<StartScreen>{
     actualCurs = jsonDecode(cursData);
   }
 
-  MainScreenLogic logic = MainScreenLogic();
-  List<String> usersItems = ["USD", "EUR", "RUB", "GBP"];
+  void getMyCurrency() async {
+    myCurrency = await db.getMyCurrency();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
@@ -73,11 +76,11 @@ class StartScreenState extends State<StartScreen>{
             )
           ),
           child:
-          currency.isNotEmpty ?
+          actualCurs.isNotEmpty ?
           ListView.builder(
-              itemCount: usersItems.length,
+              itemCount: myCurrency.length,
               itemBuilder: (BuildContext context, int index) {
-                String currencyName = usersItems[index];
+                String currencyName = myCurrency[index];
                 String imgPath = flags[currencyName] ?? "";
                 String currencyCurs = "1";
                 if (currencyName != "RUB") {
@@ -86,7 +89,7 @@ class StartScreenState extends State<StartScreen>{
 
                 return MoneyCard(currencyName: currencyName, number: currencyCurs, imgPath: imgPath,);
               }
-          ) : const Text("Loading...")
+          ) : const Center(child: Text("Loading...", style: TextStyle(color: Colors.white, fontSize: 32),))
         ),
 
         bottomNavigationBar: BottomCustomBar(onTap: ()  async {

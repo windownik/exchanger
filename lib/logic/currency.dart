@@ -4,11 +4,13 @@ import 'package:get/get.dart';
 
 class CustomCurrencyCard extends StatefulWidget {
   String imgPath, currencyShort, currencyDesc;
+  bool showCard = false;
   CustomCurrencyCard(
       {super.key,
       required this.imgPath,
       required this.currencyShort,
-      required this.currencyDesc});
+      required this.currencyDesc,
+      required this.showCard});
 
   @override
   State<StatefulWidget> createState() {
@@ -16,17 +18,19 @@ class CustomCurrencyCard extends StatefulWidget {
       imgPath: imgPath,
       currencyShort: currencyShort,
       currencyDesc: currencyDesc,
+      showCard: showCard,
     );
   }
 }
 
 class CustomCurrencyCardState extends State<CustomCurrencyCard> {
   String imgPath, currencyShort, currencyDesc;
-  bool showCard = false;
+  bool showCard;
   CustomCurrencyCardState(
       {required this.imgPath,
       required this.currencyShort,
-      required this.currencyDesc});
+      required this.currencyDesc,
+      required this.showCard});
 
   @override
   Widget build(BuildContext context) {

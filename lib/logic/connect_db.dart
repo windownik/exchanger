@@ -61,6 +61,15 @@ class DataBase {
     return curs;
   }
 
+  Future<List<String>> getMyCurrency() async {
+    final storage = await _storage;
+    final curs = storage.getStringList("myCurrency");
+    if (curs == null) {
+      return [];
+    }
+    return curs;
+  }
+
   Future<void> setMathSight(String math) async {
     final storage = await _storage;
     storage.setString("math_sight", math);
@@ -69,11 +78,6 @@ class DataBase {
   Future<void> setNumber(String number) async {
     final storage = await _storage;
     storage.setString("number_line", number);
-  }
-
-  Future<void> setNumber2(String number) async {
-    final storage = await _storage;
-    storage.setString("number_line_2", number);
   }
 
   Future<void> setMinus(String minus) async {
@@ -89,5 +93,10 @@ class DataBase {
   Future<void> setAllCurs(String curs) async {
     final storage = await _storage;
     storage.setString("curs", curs);
+  }
+
+  Future<void> setMyCurrency(List<String> myCurrency) async {
+    final storage = await _storage;
+    storage.setStringList("myCurrency", myCurrency);
   }
 }

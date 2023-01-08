@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../logic/connect_db.dart';
 import '../../logic/currency.dart';
 import '../../logic/curs.dart';
 
@@ -15,6 +16,9 @@ class CustomSettings extends StatefulWidget {
 
 class CustomSettingsState extends State<CustomSettings> {
   List<dynamic> currency = [];
+  List<String> myCurrency = ["USD", "RUB"];
+
+  DataBase db = DataBase();
   @override
   void initState() {
     getCurrensy();
@@ -24,6 +28,11 @@ class CustomSettingsState extends State<CustomSettings> {
   void getCurrensy() async {
     currency = await getAllCurrency();
     setState(() {});
+  }
+
+  void getMyCurrency() async {
+    myCurrency = await db.getMyCurrency();
+    myCurrency = myCurrency.isEmpty ? ['USD', 'RUB'] : myCurrency;
   }
 
   @override
@@ -110,8 +119,15 @@ class CustomSettingsState extends State<CustomSettings> {
                 String imgPath = currency[index]['flag'];
                 String currencyShort = currency[index]['sight'];
                 String currencyDesc = currency[index]['desc'];
+                bool showCard = false;
+
+                if (myCurrency.contains(currencyShort)) {
+                  print(currencyShort);
+                  showCard = true;
+                }
                 return CustomCurrencyCard(imgPath: imgPath,
-                  currencyShort: currencyShort, currencyDesc: currencyDesc,);
+                  currencyShort: currencyShort, currencyDesc: currencyDesc,
+                  showCard: showCard,);
 
               })
             ) : const Text("Loading...")

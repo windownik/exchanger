@@ -18,7 +18,6 @@ Future<String> getMosCurs () async {
   String urlAddress = 'cbr-xml-daily.ru';
   var url = Uri.https(urlAddress, "/daily_json.js");
   var res = await http.get(url);
-  // Map<String, dynamic> resSales = jsonDecode((res.body).toString());
   return res.body;
 }
 
