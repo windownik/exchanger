@@ -129,8 +129,10 @@ class StartScreenState extends State<StartScreen> {
                       for (int i = 0; i < myCurrency.length; i++) {
                         active.add(false);
                       }
-                      active.removeAt(position);
-                      active.insert(position, true);
+                      if (position >= 0 && position <= myCurrency.length - 1) {
+                        active.removeAt(position);
+                        active.insert(position, true);
+                      }
                       Navigator.of(context).pop();
                       setState(() {});
                     },
