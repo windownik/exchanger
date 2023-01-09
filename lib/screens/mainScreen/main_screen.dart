@@ -1,17 +1,18 @@
-
-
 import 'dart:convert';
 
 import 'package:exchanger/logic/connect_db.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../logic/curs.dart';
+import '../../logic/flags.dart';
+import '../../logic/main_screen_logic.dart';
 import '../settings/settings_screen.dart';
 import 'bottom_custom_bar.dart';
 import 'custom_app_bar_main.dart';
 import 'money_card.dart';
 
-class StartScreen extends StatefulWidget{
+class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
 
   @override
@@ -20,24 +21,28 @@ class StartScreen extends StatefulWidget{
   }
 }
 
-
-class StartScreenState extends State<StartScreen>{
-  List<String> myCurrency = ["USD", "RUB"];
-  List<dynamic> currency = ["USD"];
+class StartScreenState extends State<StartScreen> {
+  List<String> myCurrency = [];
+  List<bool> active = [];
+  List<dynamic> currency = [];
+  MainScreenLogic logic = MainScreenLogic(mainNumber: '0');
   Map<String, dynamic> actualCurs = {};
 
   DataBase db = DataBase();
   @override
   void initState() {
-    getCurrensy();
-    getMyCurrency();
+    getCurrency();
     super.initState();
   }
 
-  void getCurrensy() async {
+  void getCurrency() async {
     currency = await getAllCurrency();
     String allCurs = await getMosCurs();
+    myCurrency = await db.getMyCurrency();
     await db.setAllCurs(allCurs);
+    for (int i = 0; i < myCurrency.length; i++) {
+      active.add(false);
+    }
     setState(() {});
   }
 
@@ -46,10 +51,60 @@ class StartScreenState extends State<StartScreen>{
     actualCurs = jsonDecode(cursData);
   }
 
-  void getMyCurrency() async {
-    myCurrency = await db.getMyCurrency();
+  Widget customMainList(BuildContext context) {
+    if (myCurrency.isEmpty) {
+      return const Center(
+          child: Text(
+        "You list is empty.",
+        style: TextStyle(color: Colors.white, fontSize: 32),
+      ));
+    } else if (actualCurs.isEmpty) {
+      return const Center(
+          child: Text(
+        "Loading...",
+        style: TextStyle(color: Colors.white, fontSize: 32),
+      ));
+    } else {
+      return Column(
+        children: [
+          const SizedBox(
+            height: 18,
+          ),
+          Flexible(
+            child: ListView.builder(
+                itemCount: myCurrency.length,
+                itemBuilder: (BuildContext context, int index) {
+                  // active.add(false);
+                  String currencyName = myCurrency[index];
+                  String imgPath = flags[currencyName] ?? "";
+                  String currencyCurs = "1";
+                  if (currencyName != "RUB") {
+                    currencyCurs =
+                        actualCurs['Valute'][currencyName]['Value'].toString();
+                  }
+                  return MoneyCard(
+                    currencyName: currencyName,
+                    number: currencyCurs,
+                    imgPath: imgPath,
+                    sideLength: active[index] ? Get.width-20 : 137,
+                    onTap: () {
+                      List<bool> newActive = [];
+                      for (int i = 0; i < myCurrency.length; i++) {
+                        newActive.add(false);
+                      }
+                      newActive.removeAt(index);
+                      newActive.insert(index, true);
+                      active.clear();
+                      active = newActive;
+                      setState(() { });
+                    },
+                  );
+                }),
+          ),
+        ],
+      );
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -59,84 +114,85 @@ class StartScreenState extends State<StartScreen>{
       data: mediaQueryData.copyWith(textScaleFactor: 1),
       child: Scaffold(
         // bottomSheet: Container(height: 300, color: Colors.white,),
-        appBar: CustomAppBarMain(onPressedSettings: () {
-          showModalBottomSheet(context: context,
-              backgroundColor: Colors.transparent,
-              isScrollControlled: true,
-              builder: (BuildContext context) {
-            return  const CustomSettings();
-              });
-        },),
+        appBar: CustomAppBarMain(
+          onPressedSettings: () {
+            showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                isScrollControlled: true,
+                builder: (BuildContext context) {
+                  return CustomSettings(
+                    onPressSave: () async {
+                      myCurrency = await db.getMyCurrency();
+                      Navigator.of(context).pop();
+                      setState(() {});
+                    },
+                  );
+                });
+          },
+        ),
         body: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color.fromRGBO(27, 74, 75, 1.0), Color.fromRGBO(28, 143, 145, 1)]
-            )
-          ),
-          child:
-          actualCurs.isNotEmpty ?
-          ListView.builder(
-              itemCount: myCurrency.length,
-              itemBuilder: (BuildContext context, int index) {
-                String currencyName = myCurrency[index];
-                String imgPath = flags[currencyName] ?? "";
-                String currencyCurs = "1";
-                if (currencyName != "RUB") {
-                  currencyCurs = actualCurs['Valute'][currencyName]['Value'].toString();
-                }
-
-                return MoneyCard(currencyName: currencyName, number: currencyCurs, imgPath: imgPath,);
-              }
-          ) : const Center(child: Text("Loading...", style: TextStyle(color: Colors.white, fontSize: 32),))
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                Color.fromRGBO(27, 74, 75, 1.0),
+                Color.fromRGBO(28, 143, 145, 1)
+              ])),
+          child: customMainList(context),
         ),
 
-        bottomNavigationBar: BottomCustomBar(onTap: ()  async {
-        String allCurs = await getMosCurs();
-        await db.setAllCurs(allCurs);
-        setState(() {});
-      },
+        bottomNavigationBar: BottomCustomBar(
+          onTapReload: () async {
+            db = DataBase();
+            myCurrency = await db.getMyCurrency();
+            setState(() {});
+          },
+          onTap0: () {
+            logic.addOneNumber('0');
+            setState(() {});
+          },
+          onTap1: () {
+            logic.addOneNumber('1');
+            setState(() {});
+          },
+          onTap2: () {
+            logic.addOneNumber('2');
+            setState(() {});
+          },
+          onTap3: () {
+            logic.addOneNumber('3');
+            setState(() {});
+          },
+          onTap4: () {
+            logic.addOneNumber('4');
+            setState(() {});
+          },
+          onTap5: () {
+            logic.addOneNumber('5');
+            setState(() {});
+          },
+          onTap6: () {
+            logic.addOneNumber('6');
+            setState(() {});
+          },
+          onTap7: () {
+            logic.addOneNumber('7');
+            setState(() {});
+          },
+          onTap8: () {
+            logic.addOneNumber('8');
+            setState(() {});
+          },
+          onTap9: () {
+            logic.addOneNumber('9');
+            setState(() {});
+          },
+          onTapPoint: () {},
+          onTapBackspace: () {},
         ),
       ),
     );
   }
 }
-
-
-Map<String, String> flags = {
-  "USD": "us.png",
-  "EUR": "eur.png",
-  "AUD": "au.png",
-  "AZN": "az.png",
-  "GBP": "gb.png",
-  "AMD": "am.png",
-  "BYN": "by.png",
-  "BGN": "bg.png",
-  "BRL": "br.png",
-  "HUF": "hu.png",
-  "HKD": "hk.png",
-  "INR": "in.png",
-  "KZT": "kz.png",
-  "CAD": "ca.png",
-  "KGS": "kg.png",
-  "CNY": "cn.png",
-  "MDL": "md.png",
-  "NOK": "no.png",
-  "PLN": "pl.png",
-  "RON": "ro.png",
-  "RUB": "ru.png",
-  "SGD": "sg.png",
-  "TJS": "tj.png",
-  "TRY": "tr.png",
-  "TMT": "tm.png",
-  "UZS": "uz.png",
-  "UAH": "ua.png",
-  "CZK": "cz.png",
-  "SEK": "se.png",
-  "CHF": "ch.png",
-  "ZAR": "za.png",
-  "KRW": "kr.png",
-  "JPY": "jp.png"
-};
-

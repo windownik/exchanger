@@ -1,25 +1,85 @@
 
-import 'package:exchanger/logic/connect_db.dart';
 import 'package:flutter/material.dart';
 
-import '../../logic/main_screen_logic.dart';
 
 class BottomCustomBar extends StatefulWidget{
-  final MainScreenLogic? logic;
-  GestureTapCallback onTap;
-  BottomCustomBar({super.key, this.logic, required this.onTap});
+  GestureTapCallback onTapReload;
+  GestureTapCallback onTap1;
+  GestureTapCallback onTap2;
+  GestureTapCallback onTap3;
+  GestureTapCallback onTap4;
+  GestureTapCallback onTap5;
+  GestureTapCallback onTap6;
+  GestureTapCallback onTap7;
+  GestureTapCallback onTap8;
+  GestureTapCallback onTap9;
+  GestureTapCallback onTap0;
+  GestureTapCallback onTapPoint;
+  GestureTapCallback onTapBackspace;
+  BottomCustomBar({super.key,
+    required this.onTapReload,
+    required this.onTap0,
+    required this.onTap1,
+    required this.onTap2,
+    required this.onTap3,
+    required this.onTap4,
+    required this.onTap5,
+    required this.onTap6,
+    required this.onTap7,
+    required this.onTap8,
+    required this.onTap9,
+    required this.onTapPoint,
+    required this.onTapBackspace,});
 
   @override
   State<StatefulWidget> createState() {
-    return BottomCustomBarState(onTap: onTap);
+    return BottomCustomBarState(
+      onTapReload: onTapReload,
+      onTap1: onTap1,
+      onTap2: onTap2,
+      onTap3: onTap3,
+      onTap4: onTap4,
+      onTap5: onTap5,
+      onTap6: onTap6,
+      onTap7: onTap7,
+      onTap8: onTap8,
+      onTap9: onTap9,
+      onTap0: onTap0,
+      onTapPoint: onTapPoint,
+      onTapBackspace: onTapBackspace,);
   }
 }
 
 
 class BottomCustomBarState extends State<BottomCustomBar>{
-  GestureTapCallback onTap;
+  GestureTapCallback onTapReload;
+  GestureTapCallback onTap1;
+  GestureTapCallback onTap2;
+  GestureTapCallback onTap3;
+  GestureTapCallback onTap4;
+  GestureTapCallback onTap5;
+  GestureTapCallback onTap6;
+  GestureTapCallback onTap7;
+  GestureTapCallback onTap8;
+  GestureTapCallback onTap9;
+  GestureTapCallback onTap0;
+  GestureTapCallback onTapPoint;
+  GestureTapCallback onTapBackspace;
 
-  BottomCustomBarState({required this.onTap});
+  BottomCustomBarState({
+    required this.onTapReload,
+    required this.onTap0,
+    required this.onTap1,
+    required this.onTap2,
+    required this.onTap3,
+    required this.onTap4,
+    required this.onTap5,
+    required this.onTap6,
+    required this.onTap7,
+    required this.onTap8,
+    required this.onTap9,
+    required this.onTapPoint,
+    required this.onTapBackspace,});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +100,21 @@ class BottomCustomBarState extends State<BottomCustomBar>{
           color: const Color.fromRGBO(171, 234, 255, 1),
         )
         ),
-        CustomRow(onTap: onTap,)
+        CustomRow(
+          onTapReload: onTapReload,
+          onTap1: onTap1,
+          onTap2: onTap2,
+          onTap3: onTap3,
+          onTap4: onTap4,
+          onTap5: onTap5,
+          onTap6: onTap6,
+          onTap7: onTap7,
+          onTap8: onTap8,
+          onTap9: onTap9,
+          onTap0: onTap0,
+          onTapPoint: onTapPoint,
+          onTapBackspace: onTapBackspace,
+        )
       ])
     );
   }
@@ -48,8 +122,34 @@ class BottomCustomBarState extends State<BottomCustomBar>{
 
 
 class CustomRow extends StatelessWidget{
-  GestureTapCallback onTap;
-  CustomRow({super.key, required this.onTap});
+  GestureTapCallback onTapReload;
+  GestureTapCallback onTap1;
+  GestureTapCallback onTap2;
+  GestureTapCallback onTap3;
+  GestureTapCallback onTap4;
+  GestureTapCallback onTap5;
+  GestureTapCallback onTap6;
+  GestureTapCallback onTap7;
+  GestureTapCallback onTap8;
+  GestureTapCallback onTap9;
+  GestureTapCallback onTap0;
+  GestureTapCallback onTapPoint;
+  GestureTapCallback onTapBackspace;
+  CustomRow({super.key,
+    required this.onTapReload,
+    required this.onTap0,
+    required this.onTap1,
+    required this.onTap2,
+    required this.onTap3,
+    required this.onTap4,
+    required this.onTap5,
+    required this.onTap6,
+    required this.onTap7,
+    required this.onTap8,
+    required this.onTap9,
+    required this.onTapPoint,
+    required this.onTapBackspace,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -60,33 +160,33 @@ class CustomRow extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             const BtnClear(),
-            BtnReload(onTap: onTap,),
+            BtnReload(onTap: onTapReload,),
             const OpenCalculator(),
             const SizedBox(height: 20,)
           ],),
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-          CustomCalcBtn(calcBtnText: '7',),
-          CustomCalcBtn(calcBtnText: '4',),
-          CustomCalcBtn(calcBtnText: '1',),
-            CustomCalcBtn(calcBtnText: '0',),
+          CustomCalcBtn(calcBtnText: '7', onTap: onTap7,),
+          CustomCalcBtn(calcBtnText: '4', onTap: onTap4,),
+          CustomCalcBtn(calcBtnText: '1', onTap: onTap1,),
+            CustomCalcBtn(calcBtnText: '0', onTap: onTap0,),
             const SizedBox(height: 20,)
         ],),
         Column(mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-          CustomCalcBtn(calcBtnText: '8',),
-          CustomCalcBtn(calcBtnText: '5',),
-          CustomCalcBtn(calcBtnText: '2',),
-            CustomCalcBtn(calcBtnText: ',',),
+          CustomCalcBtn(calcBtnText: '8', onTap: onTap8,),
+          CustomCalcBtn(calcBtnText: '5', onTap: onTap5,),
+          CustomCalcBtn(calcBtnText: '2', onTap: onTap2,),
+            CustomCalcBtn(calcBtnText: ',', onTap: onTapPoint,),
             const SizedBox(height: 20,)
         ],),
         Column(mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-          CustomCalcBtn(calcBtnText: '9',),
-          CustomCalcBtn(calcBtnText: '6',),
-          CustomCalcBtn(calcBtnText: '3',),
-            CustomCalcBtn(calcBtnText: '<',),
+          CustomCalcBtn(calcBtnText: '9', onTap: onTap9,),
+          CustomCalcBtn(calcBtnText: '6', onTap: onTap6,),
+          CustomCalcBtn(calcBtnText: '3', onTap: onTap3,),
+            CustomCalcBtn(calcBtnText: '<', onTap: onTapBackspace,),
             const SizedBox(height: 20,)
         ],)
 
@@ -97,14 +197,14 @@ class CustomRow extends StatelessWidget{
 
 class CustomCalcBtn extends StatefulWidget {
   String btnText = '1';
-
-  CustomCalcBtn({super.key, required String calcBtnText}) {
+  GestureTapCallback onTap;
+  CustomCalcBtn({super.key, required String calcBtnText, required this.onTap}) {
     btnText = calcBtnText;
   }
 
   @override
   State<StatefulWidget> createState() {
-    return CustomCalcBtnState(btnText: btnText);
+    return CustomCalcBtnState(btnText: btnText, onTap: onTap);
   }
 }
 
@@ -112,8 +212,8 @@ class CustomCalcBtnState extends State<CustomCalcBtn> {
   Color pressColor = const Color.fromRGBO(171, 234, 255, 1.0);
   String btnText = '1';
   bool press = false;
-  final GestureTapCallback? onTap;
-  CustomCalcBtnState({required this.btnText, this.onTap});
+  GestureTapCallback onTap;
+  CustomCalcBtnState({required this.btnText, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +303,7 @@ class BtnClear extends StatelessWidget{
 }
 
 class BtnReload extends StatelessWidget{
-  DataBase db = DataBase();
+  // DataBase db = DataBase();
   GestureTapCallback onTap;
   BtnReload({super.key, required this.onTap});
 

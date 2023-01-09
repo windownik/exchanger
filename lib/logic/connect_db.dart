@@ -100,3 +100,5 @@ class DataBase {
     storage.setStringList("myCurrency", myCurrency);
   }
 }
+
+// DataBase db = DataBase();

@@ -1,3 +1,4 @@
+import 'package:exchanger/logic/connect_db.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -26,6 +27,7 @@ class CustomCurrencyCard extends StatefulWidget {
 class CustomCurrencyCardState extends State<CustomCurrencyCard> {
   String imgPath, currencyShort, currencyDesc;
   bool showCard;
+  DataBase db = DataBase();
   CustomCurrencyCardState(
       {required this.imgPath,
       required this.currencyShort,
@@ -35,8 +37,16 @@ class CustomCurrencyCardState extends State<CustomCurrencyCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          showCard = !showCard;
+        onTap: () async {
+          List<String> myCurrency = await db.getMyCurrency();
+          if (myCurrency.contains(currencyShort)) {
+            myCurrency.remove(currencyShort);
+            showCard = false;
+          } else {
+            myCurrency.add(currencyShort);
+            showCard = true;
+          }
+          await db.setMyCurrency(myCurrency);
           setState(() {});
         },
         child: Container(

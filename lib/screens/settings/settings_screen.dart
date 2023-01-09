@@ -6,33 +6,33 @@ import '../../logic/currency.dart';
 import '../../logic/curs.dart';
 
 class CustomSettings extends StatefulWidget {
-  const CustomSettings({super.key});
+  GestureTapCallback onPressSave;
+  CustomSettings({super.key, required this.onPressSave});
 
   @override
   State<StatefulWidget> createState() {
-    return CustomSettingsState();
+    return CustomSettingsState(onPressSave: onPressSave);
   }
 }
 
 class CustomSettingsState extends State<CustomSettings> {
   List<dynamic> currency = [];
-  List<String> myCurrency = ["USD", "RUB"];
+  List<String> myCurrency = [];
+  GestureTapCallback onPressSave;
+
+  CustomSettingsState({required this.onPressSave});
 
   DataBase db = DataBase();
   @override
   void initState() {
-    getCurrensy();
+    getCurrency();
     super.initState();
   }
 
-  void getCurrensy() async {
+  void getCurrency() async {
     currency = await getAllCurrency();
-    setState(() {});
-  }
-
-  void getMyCurrency() async {
     myCurrency = await db.getMyCurrency();
-    myCurrency = myCurrency.isEmpty ? ['USD', 'RUB'] : myCurrency;
+    setState(() {});
   }
 
   @override
@@ -71,7 +71,7 @@ class CustomSettingsState extends State<CustomSettings> {
                 Positioned(
                   right: 20,
                     top: -10,
-                    child: TextButton(onPressed: () {},
+                    child: TextButton(onPressed: onPressSave,
                     child: const Text('save', style: TextStyle(color: Color.fromRGBO(171, 234, 255, 1), fontSize: 20, decoration: TextDecoration.underline,),)))
               ],
             ),
@@ -122,7 +122,6 @@ class CustomSettingsState extends State<CustomSettings> {
                 bool showCard = false;
 
                 if (myCurrency.contains(currencyShort)) {
-                  print(currencyShort);
                   showCard = true;
                 }
                 return CustomCurrencyCard(imgPath: imgPath,
