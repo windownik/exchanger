@@ -124,6 +124,13 @@ class StartScreenState extends State<StartScreen> {
                   return CustomSettings(
                     onPressSave: () async {
                       myCurrency = await db.getMyCurrency();
+                      int position = active.indexOf(true);
+                      active.clear();
+                      for (int i = 0; i < myCurrency.length; i++) {
+                        active.add(false);
+                      }
+                      active.removeAt(position);
+                      active.insert(position, true);
                       Navigator.of(context).pop();
                       setState(() {});
                     },
