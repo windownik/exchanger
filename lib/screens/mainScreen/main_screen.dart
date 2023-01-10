@@ -91,12 +91,6 @@ class StartScreenState extends State<StartScreen> {
                     double currencyCursBool = valuteToRub/nominal/activeValuteToRub;
                     currencyCurs = currencyCursBool.toString();
                   }
-                  // else if (activeItem == "RUB" && currencyName == "RUB") {
-                  //   double activeValuteToRub = 1.0;
-                  //   int nominal = actualCurs['Valute'][activeItem]['Nominal'];
-                  //   double currencyCursBool = 1/nominal/activeValuteToRub;
-                  //   currencyCurs = currencyCursBool.toString();
-                  // }
                   else if (currencyName == "RUB") {
                     double activeValuteToRub = activeItem == 'RUB' ? 1.0 : actualCurs['Valute'][activeItem]['Value'];
                     int nominal = activeItem == 'RUB' ? 1 : actualCurs['Valute'][activeItem]['Nominal'];
