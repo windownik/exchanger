@@ -24,6 +24,7 @@ class StartScreen extends StatefulWidget {
 class StartScreenState extends State<StartScreen> {
   List<String> myCurrency = [];
   List<bool> active = [];
+  String activeItem = '';
   List<dynamic> currency = [];
   MainScreenLogic logic = MainScreenLogic(mainNumber: '0');
   Map<String, dynamic> actualCurs = {};
@@ -41,7 +42,11 @@ class StartScreenState extends State<StartScreen> {
     myCurrency = await db.getMyCurrency();
     await db.setAllCurs(allCurs);
     for (int i = 0; i < myCurrency.length; i++) {
-      active.add(false);
+      if (i == 0) {
+        active.add(true);
+      } else {
+        active.add(false);
+      }
     }
     setState(() {});
   }
@@ -78,9 +83,25 @@ class StartScreenState extends State<StartScreen> {
                   String currencyName = myCurrency[index];
                   String imgPath = flags[currencyName] ?? "";
                   String currencyCurs = "1";
+                  activeItem = activeItem.isEmpty ? myCurrency[0] : activeItem;
                   if (currencyName != "RUB") {
-                    currencyCurs =
-                        actualCurs['Valute'][currencyName]['Value'].toString();
+                    double activeValuteToRub = activeItem == 'RUB' ? 1.0 : actualCurs['Valute'][activeItem]['Value'];
+                    int nominal = activeItem == 'RUB' ? 1 : actualCurs['Valute'][activeItem]['Nominal'];
+                    double valuteToRub = actualCurs['Valute'][currencyName]['Value'];
+                    double currencyCursBool = valuteToRub/nominal/activeValuteToRub;
+                    currencyCurs = currencyCursBool.toString();
+                  }
+                  // else if (activeItem == "RUB" && currencyName == "RUB") {
+                  //   double activeValuteToRub = 1.0;
+                  //   int nominal = actualCurs['Valute'][activeItem]['Nominal'];
+                  //   double currencyCursBool = 1/nominal/activeValuteToRub;
+                  //   currencyCurs = currencyCursBool.toString();
+                  // }
+                  else if (currencyName == "RUB") {
+                    double activeValuteToRub = activeItem == 'RUB' ? 1.0 : actualCurs['Valute'][activeItem]['Value'];
+                    int nominal = activeItem == 'RUB' ? 1 : actualCurs['Valute'][activeItem]['Nominal'];
+                    double currencyCursBool = 1/nominal/activeValuteToRub;
+                    currencyCurs = currencyCursBool.toString();
                   }
                   return MoneyCard(
                     currencyName: currencyName,
@@ -88,6 +109,7 @@ class StartScreenState extends State<StartScreen> {
                     imgPath: imgPath,
                     sideLength: active[index] ? Get.width-20 : 137,
                     onTap: () {
+                      activeItem = currencyName;
                       List<bool> newActive = [];
                       for (int i = 0; i < myCurrency.length; i++) {
                         newActive.add(false);

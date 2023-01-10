@@ -10,6 +10,5 @@ class MainScreenLogic {
     } else {
       mainNumber = "$mainNumber$one";
     }
-
   }
 }

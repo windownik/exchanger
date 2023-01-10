@@ -332,7 +332,7 @@ class BtnBackspace extends StatelessWidget{
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(4),
               onTap: onTap,
             ),
           ),)
@@ -367,7 +367,7 @@ class BtnReload extends StatelessWidget{
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(4),
               onTap: onTap
               //     () async {
               //   String allCurs = await getMosCurs();
@@ -400,12 +400,12 @@ class OpenCalculator extends StatelessWidget{
         Positioned(bottom: 2.5,
             child: Container(height: 1, width: 80, color: const Color.fromRGBO(171, 234, 255, 1.0),)),
         SizedBox(
-          height: 80,
+          height: 110,
           width: 80,
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(4),
               onTap: () {
                 Navigator.pushNamed(context, "/calculator");
               },
