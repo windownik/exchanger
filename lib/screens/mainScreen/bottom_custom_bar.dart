@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 
 class BottomCustomBar extends StatefulWidget{
@@ -157,11 +158,14 @@ class CustomRow extends StatelessWidget{
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          // mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            const SizedBox(height: 12,),
             const BtnClear(),
+            const SizedBox(height: 24,),
             BtnReload(onTap: onTapReload,),
-            const OpenCalculator(),
+            const SizedBox(height: 20.5,),
+            OpenCalculator(),
             const SizedBox(height: 20,)
           ],),
         Column(
@@ -186,7 +190,7 @@ class CustomRow extends StatelessWidget{
           CustomCalcBtn(calcBtnText: '9', onTap: onTap9,),
           CustomCalcBtn(calcBtnText: '6', onTap: onTap6,),
           CustomCalcBtn(calcBtnText: '3', onTap: onTap3,),
-            CustomCalcBtn(calcBtnText: '<', onTap: onTapBackspace,),
+            BtnBackspace(onTap: onTapBackspace,),
             const SizedBox(height: 20,)
         ],)
 
@@ -287,6 +291,8 @@ class BtnClear extends StatelessWidget{
               color: Color.fromRGBO(171, 234, 255, 1.0),
             ),),),
         ),
+        Positioned(bottom: 0,
+            child: Container(height: 1, width: 80, color: const Color.fromRGBO(171, 234, 255, 1.0),)),
         SizedBox(
           height: 40,
           width: 80,
@@ -298,7 +304,39 @@ class BtnClear extends StatelessWidget{
             ),
           ),)
       ],);
+  }
+}
 
+class BtnBackspace extends StatelessWidget{
+  GestureTapCallback onTap;
+  BtnBackspace({super.key, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return
+      Stack(children: [
+        Container(
+          height: 40,
+          width: 80,
+          decoration: BoxDecoration(
+            // color: const Color.fromRGBO(200, 100, 150, 1.0),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Center(child: SvgPicture.asset("assets/svg/backspace.svg", height: 24,),),
+        ),
+        Positioned(bottom: 0,
+            child: Container(height: 1, width: 80, color: const Color.fromRGBO(171, 234, 255, 1.0),)),
+        SizedBox(
+          height: 40,
+          width: 80,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(10),
+              onTap: onTap,
+            ),
+          ),)
+      ],);
   }
 }
 
@@ -318,9 +356,11 @@ class BtnReload extends StatelessWidget{
             // color: const Color.fromRGBO(142, 133, 167, 1.0),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Center(child: Icon(Icons.refresh, color: Color.fromRGBO(171, 234, 255, 1.0),),
+          child: Center(child: SvgPicture.asset("assets/svg/reload.svg", height: 18,),
           ),
         ),
+        Positioned(bottom: 0,
+            child: Container(height: 1, width: 80, color: const Color.fromRGBO(171, 234, 255, 1.0),)),
         SizedBox(
           height: 40,
           width: 80,
@@ -352,10 +392,13 @@ class OpenCalculator extends StatelessWidget{
           decoration: BoxDecoration(
             // color: const Color.fromRGBO(208, 101, 36, 1.0),
             borderRadius: BorderRadius.circular(10),
+
           ),
-          child: const Center(child: Icon(Icons.calculate_outlined, size: 60, color: Color.fromRGBO(171, 234, 255, 1.0),),
+          child: Center(child: SvgPicture.asset("assets/svg/calculator.svg", height: 40,),
           ),
         ),
+        Positioned(bottom: 2.5,
+            child: Container(height: 1, width: 80, color: const Color.fromRGBO(171, 234, 255, 1.0),)),
         SizedBox(
           height: 80,
           width: 80,
