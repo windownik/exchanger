@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:exchanger/logic/connect_db.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,8 @@ class StartScreen extends StatefulWidget {
 }
 
 class StartScreenState extends State<StartScreen> {
-  List<String> myCurrency = [];
-  List<bool> active = [];
+  List<String> myCurrency = ['USD'];
+  List<bool> active = [true];
   String activeItem = '';
   List<dynamic> currency = [];
   MainScreenLogic logic = MainScreenLogic(mainNumber: '0');
@@ -38,9 +39,12 @@ class StartScreenState extends State<StartScreen> {
 
   void getCurrency() async {
     currency = await getAllCurrency();
+    logic.mainNumber = await db.getNumber();
+    logic.mainNumber = logic.mainNumber == '' ? '0' : logic.mainNumber;
     String allCurs = await getMosCurs();
     myCurrency = await db.getMyCurrency();
     await db.setAllCurs(allCurs);
+    active.clear();
     for (int i = 0; i < myCurrency.length; i++) {
       if (i == 0) {
         active.add(true);
@@ -57,6 +61,7 @@ class StartScreenState extends State<StartScreen> {
   }
 
   Widget customMainList(BuildContext context) {
+    activeItem = activeItem.isEmpty ? myCurrency[0] : activeItem;
     if (myCurrency.isEmpty) {
       return const Center(
           child: Text(
@@ -82,26 +87,17 @@ class StartScreenState extends State<StartScreen> {
                   // active.add(false);
                   String currencyName = myCurrency[index];
                   String imgPath = flags[currencyName] ?? "";
-                  String currencyCurs = "1";
-                  activeItem = activeItem.isEmpty ? myCurrency[0] : activeItem;
-                  if (currencyName != "RUB") {
-                    double activeValuteToRub = activeItem == 'RUB' ? 1.0 : actualCurs['Valute'][activeItem]['Value'];
-                    int nominal = activeItem == 'RUB' ? 1 : actualCurs['Valute'][activeItem]['Nominal'];
-                    double valuteToRub = actualCurs['Valute'][currencyName]['Value'];
-                    double currencyCursBool = valuteToRub/nominal/activeValuteToRub;
-                    currencyCurs = currencyCursBool.toString();
-                  }
-                  else if (currencyName == "RUB") {
-                    double activeValuteToRub = activeItem == 'RUB' ? 1.0 : actualCurs['Valute'][activeItem]['Value'];
-                    int nominal = activeItem == 'RUB' ? 1 : actualCurs['Valute'][activeItem]['Nominal'];
-                    double currencyCursBool = 1/nominal/activeValuteToRub;
-                    currencyCurs = currencyCursBool.toString();
-                  }
+                  String currencyCurs = getCursOfValute(
+                      activeItem: activeItem,
+                      index: index,
+                      myCurrency: myCurrency,
+                      actualCurs: actualCurs, amount: logic.getAmount());
+
                   return MoneyCard(
                     currencyName: currencyName,
                     number: currencyCurs,
                     imgPath: imgPath,
-                    sideLength: active[index] ? Get.width-20 : 137,
+                    sideLength: active[index] ? Get.width - 20 : 137,
                     onTap: () {
                       activeItem = currencyName;
                       List<bool> newActive = [];
@@ -112,7 +108,7 @@ class StartScreenState extends State<StartScreen> {
                       newActive.insert(index, true);
                       active.clear();
                       active = newActive;
-                      setState(() { });
+                      setState(() {});
                     },
                   );
                 }),
@@ -214,8 +210,23 @@ class StartScreenState extends State<StartScreen> {
             logic.addOneNumber('9');
             setState(() {});
           },
-          onTapPoint: () {},
-          onTapBackspace: () {},
+          onTapPoint: () {
+            logic.point();
+          setState(() {});
+          },
+          onTapBackspace: () {
+            logic.backspace();
+            setState(() {});
+          },
+          clear: () {
+            logic.clear();
+            setState(() {});
+          },
+          line: () async {
+              await db.setNumber(logic.mainNumber);
+              // print("записал ${logic.mainNumber}");
+              Navigator.pushNamed(context, "/calculator");
+          },
         ),
       ),
     );

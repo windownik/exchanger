@@ -70,6 +70,42 @@ class DataBase {
     return curs;
   }
 
+  Future<String> getValue() async {
+    final storage = await _storage;
+    final value = storage.getString("value");
+    if (value == null) {
+      return '';
+    }
+    return value;
+  }
+
+  Future<bool> getVibration() async {
+    final storage = await _storage;
+    final vibration = storage.getBool("vibration");
+    if (vibration == null) {
+      return false;
+    }
+    return vibration;
+  }
+
+  Future<bool> getSound() async {
+    final storage = await _storage;
+    final sound = storage.getBool("sound");
+    if (sound == null) {
+      return false;
+    }
+    return sound;
+  }
+
+  Future<String> getMinimum() async {
+    final storage = await _storage;
+    final point = storage.getString("point");
+    if (point == null) {
+      return 'Auto';
+    }
+    return point;
+  }
+
   Future<void> setMathSight(String math) async {
     final storage = await _storage;
     storage.setString("math_sight", math);
@@ -98,6 +134,26 @@ class DataBase {
   Future<void> setMyCurrency(List<String> myCurrency) async {
     final storage = await _storage;
     storage.setStringList("myCurrency", myCurrency);
+  }
+
+  Future<void> setValue(String value) async {
+    final storage = await _storage;
+    storage.setString("value", value);
+  }
+
+  Future<void> setVibration(bool vibration) async {
+    final storage = await _storage;
+    storage.setBool("vibration", vibration);
+  }
+
+  Future<void> setSound(bool sound) async {
+    final storage = await _storage;
+    storage.setBool("sound", sound);
+  }
+
+  Future<void> setMinimum(String point) async {
+    final storage = await _storage;
+    storage.setString("point", point);
   }
 }
 

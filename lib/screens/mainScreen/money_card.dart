@@ -12,26 +12,6 @@ class MoneyCard extends StatelessWidget {
         required this.onTap,
         required this.sideLength});
 
-//   @override
-//   State<StatefulWidget> createState() {
-//     print(123);
-//     return _MoneyCard(currencyName: currencyName,
-//       number: number,
-//       imgPath: imgPath, onTap: onTap, sideLength: sideLength,);
-//   }
-// }
-//
-// class _MoneyCard extends State<MoneyCard>{
-//   String currencyName, number, imgPath;
-//   double sideLength = 137;
-//   GestureTapCallback onTap;
-//   _MoneyCard(
-//       {required this.currencyName,
-//       required this.number,
-//       required this.imgPath,
-//       required this.onTap,
-//       required this.sideLength});
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

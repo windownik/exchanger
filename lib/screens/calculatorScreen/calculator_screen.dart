@@ -237,7 +237,7 @@ class CalculatorScreenState extends State<CalculatorScreen> {
                             },
                           ),
                           CustomCalcBtn(
-                            calcBtnText: ',',
+                            calcBtnText: '.',
                             onTap: () {
                               calc = addPoint(calc);
                               setState(() {});
