@@ -19,7 +19,7 @@ class DataBase {
     final storage = await _storage;
     final number = storage.getString("number_line");
     if (number == null) {
-      return '';
+      return '0';
     }
     return number;
   }
@@ -97,13 +97,22 @@ class DataBase {
     return sound;
   }
 
-  Future<String> getMinimum() async {
+  Future<String> getRound() async {
     final storage = await _storage;
     final point = storage.getString("point");
     if (point == null) {
       return 'Auto';
     }
     return point;
+  }
+
+  Future<int> getActiveCurrency() async {
+    final storage = await _storage;
+    final active = storage.getInt("active");
+    if (active == null) {
+      return 0;
+    }
+    return active;
   }
 
   Future<void> setMathSight(String math) async {
@@ -114,6 +123,11 @@ class DataBase {
   Future<void> setNumber(String number) async {
     final storage = await _storage;
     storage.setString("number_line", number);
+  }
+
+  Future<void> setActiveCurrency(int active) async {
+    final storage = await _storage;
+    storage.setInt("active", active);
   }
 
   Future<void> setMinus(String minus) async {
@@ -151,10 +165,8 @@ class DataBase {
     storage.setBool("sound", sound);
   }
 
-  Future<void> setMinimum(String point) async {
+  Future<void> setMinimum(String roundNumber) async {
     final storage = await _storage;
-    storage.setString("point", point);
+    storage.setString("point", roundNumber);
   }
 }
-
-// DataBase db = DataBase();

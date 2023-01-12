@@ -6,7 +6,8 @@ import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 const List<String> list = <String>['Auto', '0', '1', '2', '3', '4', '5', '6'];
 
 class SettingsGlobal extends StatelessWidget {
-  const SettingsGlobal({super.key});
+  VoidCallback onPressed;
+  SettingsGlobal({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class SettingsGlobal extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                const SettingsRowTittle(),
+                SettingsRowTittle(onPressed: onPressed,),
                 const SizedBox(
                   height: 10,
                 ),
@@ -55,7 +56,8 @@ class SettingsGlobal extends StatelessWidget {
 }
 
 class SettingsRowTittle extends StatelessWidget {
-  const SettingsRowTittle({super.key});
+  VoidCallback onPressed;
+  SettingsRowTittle({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +77,7 @@ class SettingsRowTittle extends StatelessWidget {
           width: 45,
         ),
         IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+            onPressed: onPressed,
             icon: const Icon(
               Icons.close,
               color: Color.fromRGBO(77, 77, 77, 1),
@@ -98,24 +98,21 @@ class MinimumAccuracyRow extends StatefulWidget {
 
 class _MinimumAccuracyRow extends State<MinimumAccuracyRow> {
   DataBase db = DataBase();
-  String dropdownValue = '';
+  String dropdownValue = 'Auto';
 
-  // @override
-  // void initState() {
-  //   getMinimumPoint();
-  //   super.initState();
-  // }
-  //
-  // void getMinimumPoint() async {
-  //   dropdownValue = await db.getMinimum();
-  //   setState(() {});
-  // }
+  @override
+  void initState() {
+    getMinimumPoint();
+    super.initState();
+  }
+
+  void getMinimumPoint() async {
+    dropdownValue = await db.getRound();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (dropdownValue == '') {
-      dropdownValue = GlobalSettingsInherit.maybeOf(context)?.dropdownValue ?? 'Auto';
-    }
     return Row(
       children: [
         const SizedBox(
@@ -350,31 +347,3 @@ class _VibrationRow extends State<VibrationRow> {
   }
 }
 
-class GlobalSettingsInherit extends InheritedWidget {
-  final bool vibration;
-  final bool sound;
-  final String dropdownValue;
-
-  const GlobalSettingsInherit(
-      {super.key,
-        required this.sound,
-      required super.child,
-      required this.vibration,
-      required this.dropdownValue});
-
-  static GlobalSettingsInherit? maybeOf(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<GlobalSettingsInherit>();
-  }
-
-  @override
-  bool updateShouldNotify(GlobalSettingsInherit oldWidget) {
-    if (oldWidget.vibration != vibration) {
-      return true;
-    } else if (oldWidget.sound != sound) {
-      return true;
-    } else if (oldWidget.dropdownValue != dropdownValue) {
-      return true;
-    }
-    return false;
-  }
-}

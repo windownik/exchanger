@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../logic/connect_db.dart';
-import '../settings_gloabal/settings_global.dart';
 
 class CustomAppBarMain extends StatelessWidget implements PreferredSizeWidget {
   DataBase db = DataBase();
-  VoidCallback onPressedSettings;
-  CustomAppBarMain({super.key, required this.onPressedSettings});
+  VoidCallback onPressedSettings, onPressedShowDialog;
+  CustomAppBarMain({super.key, required this.onPressedSettings,
+    required this.onPressedShowDialog});
 
   bool vibration = true;
   bool sound = true;
@@ -15,26 +15,27 @@ class CustomAppBarMain extends StatelessWidget implements PreferredSizeWidget {
   void getShowDialogVars() async {
     vibration = await db.getVibration();
     sound = await db.getSound();
-    dropdownValue = await db.getMinimum();
+    dropdownValue = await db.getRound();
   }
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        onPressed: () {
-          showDialog(
-              context: (context),
-              builder: (BuildContext context) {
-                getShowDialogVars();
-                return GlobalSettingsInherit(
-                  vibration: vibration,
-                  dropdownValue: dropdownValue,
-                  sound: sound,
-                  child: SettingsGlobal(),
-                );
-              });
-        },
+        onPressed: onPressedShowDialog,
+        //     () {
+        //   showDialog(
+        //       context: (context),
+        //       builder: (BuildContext context) {
+        //         getShowDialogVars();
+        //         return GlobalSettingsInherit(
+        //           vibration: vibration,
+        //           dropdownValue: dropdownValue,
+        //           sound: sound,
+        //           child: SettingsGlobal(),
+        //         );
+        //       });
+        // },
         icon: const Icon(Icons.menu),
       ),
       actions: [

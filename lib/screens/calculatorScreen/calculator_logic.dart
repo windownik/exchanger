@@ -29,17 +29,17 @@ MathCalculator saveBtn(MathCalculator calc, String btnText) {
 MathCalculator addPoint(MathCalculator calc) {
   if (calc.state == "num1") {
     String numbers = calc.line;
-    if (numbers.contains(',')) {
+    if (numbers.contains('.')) {
       return calc;
     }
-    calc.line = "$numbers,";
+    calc.line = "$numbers.";
     return calc;
   } else if (calc.state == "num2") {
     String numbers = calc.lineSecond;
-    if (numbers.contains(',')) {
+    if (numbers.contains('.')) {
       return calc;
     }
-    calc.lineSecond = "$numbers,";
+    calc.lineSecond = "$numbers.";
     return calc;
   } else {
     return calc;

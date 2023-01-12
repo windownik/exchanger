@@ -1,7 +1,10 @@
-class MainScreenLogic {
-  String mainNumber;
+import 'dart:math';
 
-  MainScreenLogic({required this.mainNumber});
+class MainScreenLogic {
+  String mainNumber, roundNumber;
+  int activeCurrency = 0;
+
+  MainScreenLogic({required this.mainNumber, required this.roundNumber});
 
   void addOneNumber(String one) {
     if (mainNumber == '0') {
@@ -31,6 +34,10 @@ class MainScreenLogic {
 
   }
 
+  void setRound(String roundNumber) {
+    this.roundNumber = roundNumber;
+  }
+
   double getAmount() => double.parse(mainNumber);
   String getNumber() => mainNumber;
 }
@@ -38,12 +45,15 @@ class MainScreenLogic {
 String getCursOfValute(
     {required double amount,
     required String activeItem,
+      required String roundNumber,
     required int index,
     required List<String> myCurrency,
     required Map<String, dynamic> actualCurs}) {
   String currencyName = myCurrency[index];
   String currencyCurs = "1";
-  if (activeItem == 'RUB') {
+  if (currencyName == activeItem) {
+    return roundCurs(amount.toString(), roundNumber);
+  } else if (activeItem == 'RUB') {
     if (amount == 0) {
       return '0';
     }
@@ -59,7 +69,7 @@ String getCursOfValute(
         currencyName: currencyName,
         activeItem: activeItem);
   }
-  return currencyCurs;
+  return roundCurs(currencyCurs, roundNumber);
 }
 
 String _activeItemRub(
@@ -99,4 +109,24 @@ String _activeItemNotRub(
     currencyCurs = currencyCursDouble.toString();
   }
   return currencyCurs;
+}
+
+String roundCurs (String currencyCurs, roundNumber) {
+  String roundedCurs = '';
+  if (roundNumber == 'Auto') {
+    double cursDouble = double.parse(currencyCurs);
+    roundedCurs = cursDouble.round().toString();
+  } else if (roundNumber == '0') {
+    double cursDouble = double.parse(currencyCurs);
+    roundedCurs = cursDouble.round().toString();
+  } else {
+    int roundNumb = int.parse(roundNumber);
+    double cursDouble = double.parse(currencyCurs);
+    double currencyCursInt = cursDouble * pow(10, roundNumb);
+    roundedCurs = (currencyCursInt.round()/pow(10, roundNumb)).toString();
+  }
+  if (roundedCurs.endsWith('.0')) {
+    roundedCurs = roundedCurs.substring(0, roundedCurs.length-2);
+  }
+  return roundedCurs;
 }

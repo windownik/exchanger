@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:exchanger/logic/connect_db.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +9,7 @@ import '../../logic/curs.dart';
 import '../../logic/flags.dart';
 import '../../logic/main_screen_logic.dart';
 import '../settings/settings_screen.dart';
+import '../settings_gloabal/settings_global.dart';
 import 'bottom_custom_bar.dart';
 import 'custom_app_bar_main.dart';
 import 'money_card.dart';
@@ -25,39 +26,56 @@ class StartScreen extends StatefulWidget {
 class StartScreenState extends State<StartScreen> {
   List<String> myCurrency = ['USD'];
   List<bool> active = [true];
-  String activeItem = '';
+  String activeItem = '', roundNumber = '0';
   List<dynamic> currency = [];
-  MainScreenLogic logic = MainScreenLogic(mainNumber: '0');
+  MainScreenLogic logic = MainScreenLogic(mainNumber: '0', roundNumber: '0');
   Map<String, dynamic> actualCurs = {};
+  Map<String, String> myCursOnDisplay = {};
 
   DataBase db = DataBase();
   @override
   void initState() {
-    getCurrency();
+    getStartState();
     super.initState();
   }
 
-  void getCurrency() async {
-    currency = await getAllCurrency();
+  void getStartState() async {
     logic.mainNumber = await db.getNumber();
-    logic.mainNumber = logic.mainNumber == '' ? '0' : logic.mainNumber;
-    String allCurs = await getMosCurs();
+    logic.roundNumber = await db.getRound();
+    logic.activeCurrency = await db.getActiveCurrency();
     myCurrency = await db.getMyCurrency();
-    await db.setAllCurs(allCurs);
+    currency = await getAllCurrency();
+    roundNumber = await db.getRound();
+    buildActive();
+    setState(() {});
+  }
+
+  void buildActive() async {
     active.clear();
     for (int i = 0; i < myCurrency.length; i++) {
-      if (i == 0) {
+      if (i == logic.activeCurrency) {
+        activeItem = myCurrency[i];
         active.add(true);
       } else {
         active.add(false);
       }
     }
-    setState(() {});
+
   }
 
   void getCurs() async {
     String cursData = await db.getAllCurs();
     actualCurs = jsonDecode(cursData);
+  }
+
+  void updateCurs() async {
+    String cursData = await getMosCurs();
+    await db.setAllCurs(cursData);
+    actualCurs = jsonDecode(cursData);
+  }
+
+  void getShowDialogVars() async {
+    roundNumber = await db.getRound();
   }
 
   Widget customMainList(BuildContext context) {
@@ -84,21 +102,25 @@ class StartScreenState extends State<StartScreen> {
             child: ListView.builder(
                 itemCount: myCurrency.length,
                 itemBuilder: (BuildContext context, int index) {
-                  // active.add(false);
+
                   String currencyName = myCurrency[index];
                   String imgPath = flags[currencyName] ?? "";
                   String currencyCurs = getCursOfValute(
                       activeItem: activeItem,
                       index: index,
                       myCurrency: myCurrency,
-                      actualCurs: actualCurs, amount: logic.getAmount());
-
+                      actualCurs: actualCurs,
+                      amount: logic.getAmount(),
+                      roundNumber: roundNumber);
+                  myCursOnDisplay[currencyName] = currencyCurs;
                   return MoneyCard(
                     currencyName: currencyName,
                     number: currencyCurs,
                     imgPath: imgPath,
                     sideLength: active[index] ? Get.width - 20 : 137,
                     onTap: () {
+                      logic.mainNumber = myCursOnDisplay[currencyName]?? '1';
+                      logic.activeCurrency = index;
                       activeItem = currencyName;
                       List<bool> newActive = [];
                       for (int i = 0; i < myCurrency.length; i++) {
@@ -125,7 +147,6 @@ class StartScreenState extends State<StartScreen> {
     return MediaQuery(
       data: mediaQueryData.copyWith(textScaleFactor: 1),
       child: Scaffold(
-        // bottomSheet: Container(height: 300, color: Colors.white,),
         appBar: CustomAppBarMain(
           onPressedSettings: () {
             showModalBottomSheet(
@@ -135,6 +156,7 @@ class StartScreenState extends State<StartScreen> {
                 builder: (BuildContext context) {
                   return CustomSettings(
                     onPressSave: () async {
+                      DataBase db = DataBase();
                       myCurrency = await db.getMyCurrency();
                       int position = active.indexOf(true);
                       active.clear();
@@ -149,6 +171,18 @@ class StartScreenState extends State<StartScreen> {
                       setState(() {});
                     },
                   );
+                });
+          }, onPressedShowDialog: () {
+            showDialog(
+                context: (context),
+                builder: (BuildContext context) {
+                  getShowDialogVars();
+                  return SettingsGlobal(onPressed: () async {
+                      db = DataBase();
+                      roundNumber = await db.getRound();
+                      Navigator.of(context).pop();
+                      setState(() { });
+                    },);
                 });
           },
         ),
@@ -166,8 +200,7 @@ class StartScreenState extends State<StartScreen> {
 
         bottomNavigationBar: BottomCustomBar(
           onTapReload: () async {
-            db = DataBase();
-            myCurrency = await db.getMyCurrency();
+            updateCurs();
             setState(() {});
           },
           onTap0: () {
@@ -223,12 +256,17 @@ class StartScreenState extends State<StartScreen> {
             setState(() {});
           },
           line: () async {
+            DataBase db = DataBase();
               await db.setNumber(logic.mainNumber);
-              // print("записал ${logic.mainNumber}");
-              Navigator.pushNamed(context, "/calculator");
+              await db.setActiveCurrency(logic.activeCurrency);
+              Timer(const Duration(milliseconds: 10), () {
+                Navigator.pushNamed(context, "/calculator");
+              }
+              );
           },
         ),
       ),
     );
   }
+
 }
