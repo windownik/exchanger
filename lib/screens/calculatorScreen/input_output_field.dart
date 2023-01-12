@@ -1,6 +1,9 @@
 
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
+import '../../logic/to_ranks.dart';
 
 
 class InputOutputField extends StatelessWidget {
@@ -31,10 +34,15 @@ class InputOutputField extends StatelessWidget {
                     color: Color.fromRGBO(77, 77, 77, 1)),) : MathContainer(math: _calc.mathSight,)
             ),
 
-        Container(
-          alignment: Alignment.centerRight,
-        child: Text(getNumbFromCalc(_calc),
-        style: const TextStyle(fontSize: 49, fontWeight: FontWeight.w500, color: Color.fromRGBO(77, 77, 77, 1)), ),)
+        Flexible(
+          // alignment: Alignment.centerRight,
+          child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+            reverse: true,
+            // alignment: Alignment.centerRight,
+          child: Text(getNumbFromCalc(_calc),
+          style: const TextStyle(fontSize: 49, fontWeight: FontWeight.w500, color: Color.fromRGBO(77, 77, 77, 1)), ),),
+        )
       ])
     );
   }
@@ -64,7 +72,7 @@ String getNumbFromCalc (MathCalculator calc) {
   } else {
     returnText = calc.minusSecond == '-' ? "-${calc.lineSecond}" : calc.lineSecond;
   }
-  return returnText;
+  return toRanksCalc(number: returnText);
 }
 
 class MathCalculator {

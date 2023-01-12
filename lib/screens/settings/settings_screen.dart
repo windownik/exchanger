@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,7 +18,7 @@ class CustomSettings extends StatefulWidget {
 }
 
 class CustomSettingsState extends State<CustomSettings> {
-  List<dynamic> currency = [];
+  var currency = [];
   List<String> myCurrency = [];
   GestureTapCallback onPressSave;
 
@@ -32,6 +34,23 @@ class CustomSettingsState extends State<CustomSettings> {
   void getCurrency() async {
     currency = await getAllCurrency();
     myCurrency = await db.getMyCurrency();
+
+    var newMyCurrency = [];
+    for (var one in myCurrency) {
+      for (var two in currency) {
+        if (two['sight'] == one) {
+          newMyCurrency.add(two);
+          break;
+        }
+      }
+    }
+
+    for (var one in currency) {
+      if (!newMyCurrency.contains(one)) {
+        newMyCurrency. add(one);
+      }
+    }
+    currency = newMyCurrency;
     setState(() {});
   }
 
@@ -69,71 +88,131 @@ class CustomSettingsState extends State<CustomSettings> {
                       fontWeight: FontWeight.w500),
                 )),
                 Positioned(
-                  right: 20,
+                    right: 20,
                     top: -10,
-                    child: TextButton(onPressed: onPressSave,
-                    child: const Text('save', style: TextStyle(color: Color.fromRGBO(171, 234, 255, 1), fontSize: 20, decoration: TextDecoration.underline,),)))
+                    child: TextButton(
+                        onPressed: onPressSave,
+                        child: const Text(
+                          'save',
+                          style: TextStyle(
+                            color: Color.fromRGBO(171, 234, 255, 1),
+                            fontSize: 20,
+                            decoration: TextDecoration.underline,
+                          ),
+                        )))
               ],
             ),
           ),
-          const SizedBox(height: 20,),
-          SizedBox(width: Get.width*0.9,
-            child: const TextField(
+          const SizedBox(
+            height: 20,
+          ),
+          SizedBox(
+            width: Get.width * 0.9,
+            child: TextField(
+              onChanged: (text) async {
+                currency = await getAllCurrency();
 
-              style: TextStyle(
+                if (text.isEmpty) {
+                  setState(() {});
+                  return;
+                }
+                var newCurrency = [];
+                text = text.toUpperCase();
+                for (var one in currency) {
+                  if (one['sight'].contains(text)) {
+                    newCurrency.add(one);
+                    // print(one);
+                  }
+                }
+                currency = newCurrency;
+                // print(currency);
+                setState(() {});
+              },
+              style: const TextStyle(
                 color: Color.fromRGBO(171, 234, 255, 1),
               ),
-                decoration: InputDecoration(
-                  isDense: true,
-                  contentPadding: EdgeInsets.all(10),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    borderSide: BorderSide(
-                        width: 1,
-                        color: Color.fromRGBO(171, 234, 255, 1)),
-                  ),
-                  disabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    borderSide: BorderSide(
-                        width: 1,
-                        color: Color.fromRGBO(171, 234, 255, 1)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    borderSide: BorderSide(
-                        width: 1,
-                        color: Color.fromRGBO(171, 234, 255, 1)),
-                  ),
-                  hintText: 'Search',
-                    hintStyle: TextStyle(
-                        color: Color.fromRGBO(171, 234, 255, 1)),
+              decoration: const InputDecoration(
+                isDense: true,
+                contentPadding: EdgeInsets.all(10),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  borderSide: BorderSide(
+                      width: 1, color: Color.fromRGBO(171, 234, 255, 1)),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  borderSide: BorderSide(
+                      width: 1, color: Color.fromRGBO(171, 234, 255, 1)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  borderSide: BorderSide(
+                      width: 1, color: Color.fromRGBO(171, 234, 255, 1)),
+                ),
+                hintText: 'Search',
+                hintStyle: TextStyle(color: Color.fromRGBO(171, 234, 255, 1)),
               ),
-
             ),
           ),
-          const SizedBox(height: 20,),
-          currency.isNotEmpty ?
-          Flexible(child: ListView.builder(
-              itemCount: currency.length,
-              itemBuilder: (BuildContext context, int index) {
-                String imgPath = currency[index]['flag'];
-                String currencyShort = currency[index]['sight'];
-                String currencyDesc = currency[index]['desc'];
-                bool showCard = false;
+          const SizedBox(
+            height: 20,
+          ),
+          currency.isNotEmpty
+              ? Flexible(
+                  child: ListView.builder(
+                      itemCount: currency.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        String imgPath = currency[index]['flag'];
+                        String currencyShort = currency[index]['sight'];
+                        String currencyDesc = currency[index]['desc'];
+                        bool showCard = false;
 
-                if (myCurrency.contains(currencyShort)) {
-                  showCard = true;
-                }
-                return CustomCurrencyCard(imgPath: imgPath,
-                  currencyShort: currencyShort, currencyDesc: currencyDesc,
-                  showCard: showCard,);
-
-              })
-            ) : const Text("Loading...")
-
-
+                        if (myCurrency.contains(currencyShort)) {
+                          showCard = true;
+                        }
+                        // print([imgPath, currencyShort, currencyDesc]);
+                        return SettingsCardInherith(
+                          imgPath: imgPath,
+                          currencyShort: currencyShort,
+                          currencyDesc: currencyDesc,
+                          showCard: showCard,
+                          child: CustomCurrencyCard(),
+                        );
+                      }))
+              : const Text("Loading...")
         ],
       ),
     );
+  }
+}
+
+class SettingsCardInherith extends InheritedWidget {
+  String imgPath, currencyShort, currencyDesc;
+  bool showCard = false;
+
+  SettingsCardInherith(
+      {super.key,
+      required super.child,
+      required this.imgPath,
+      required this.currencyShort,
+      required this.currencyDesc,
+      required this.showCard});
+
+  static SettingsCardInherith? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<SettingsCardInherith>();
+  }
+
+  @override
+  bool updateShouldNotify(SettingsCardInherith oldWidget) {
+    if (imgPath != oldWidget.imgPath) {
+      return true;
+    } else if (currencyShort != oldWidget.currencyShort) {
+      return true;
+    } else if (currencyDesc != oldWidget.currencyDesc) {
+      return true;
+    } else if (showCard != oldWidget.showCard) {
+      return true;
+    }
+    return false;
   }
 }

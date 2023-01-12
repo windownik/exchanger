@@ -3,39 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-class CustomCurrencyCard extends StatefulWidget {
-  String imgPath, currencyShort, currencyDesc;
-  bool showCard = false;
-  CustomCurrencyCard(
-      {super.key,
-      required this.imgPath,
-      required this.currencyShort,
-      required this.currencyDesc,
-      required this.showCard});
+import '../screens/settings/settings_screen.dart';
 
+class CustomCurrencyCard extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return CustomCurrencyCardState(
-      imgPath: imgPath,
-      currencyShort: currencyShort,
-      currencyDesc: currencyDesc,
-      showCard: showCard,
-    );
+    return CustomCurrencyCardState();
   }
 }
 
 class CustomCurrencyCardState extends State<CustomCurrencyCard> {
-  String imgPath, currencyShort, currencyDesc;
-  bool showCard;
+  bool tap = false;
+  bool showCard = false;
   DataBase db = DataBase();
-  CustomCurrencyCardState(
-      {required this.imgPath,
-      required this.currencyShort,
-      required this.currencyDesc,
-      required this.showCard});
 
   @override
   Widget build(BuildContext context) {
+    String imgPath = SettingsCardInherith.of(context)?.imgPath ?? '';
+    String currencyShort = SettingsCardInherith.of(context)?.currencyShort ?? '';
+    String currencyDesc = SettingsCardInherith.of(context)?.currencyDesc ?? '';
+    if (!tap) {
+      showCard = SettingsCardInherith.of(context)?.showCard ?? false;
+    }
+
     return GestureDetector(
         onTap: () async {
           List<String> myCurrency = await db.getMyCurrency();
@@ -47,12 +37,14 @@ class CustomCurrencyCardState extends State<CustomCurrencyCard> {
             showCard = true;
           }
           await db.setMyCurrency(myCurrency);
+          tap = true;
           setState(() {});
         },
         child: Container(
           margin: const EdgeInsets.only(top: 15),
           padding: const EdgeInsets.only(left: 18, right: 18),
           height: 40,
+          color: Colors.transparent,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,

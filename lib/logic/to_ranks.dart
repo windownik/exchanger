@@ -31,6 +31,11 @@ String toRanks (int number) {
 
 String toRanksCalc ({required String number}) {
   String newNumber = '';
+  String sight = '';
+  if (number.startsWith('-')) {
+    sight = '-';
+    number = number.substring(1, number.length);
+  }
   if (number.contains('.')) {
     List<String> newList = number.split('.');
     int intPart = int.parse(newList[0]);
@@ -40,5 +45,5 @@ String toRanksCalc ({required String number}) {
     newNumber = toRanks(int.parse(number));
   }
 
-  return newNumber;
+  return "$sight$newNumber";
 }
