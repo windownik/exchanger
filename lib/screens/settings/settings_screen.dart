@@ -97,7 +97,6 @@ class CustomSettingsState extends State<CustomSettings> {
                           style: TextStyle(
                             color: Color.fromRGBO(171, 234, 255, 1),
                             fontSize: 20,
-                            decoration: TextDecoration.underline,
                           ),
                         )))
               ],

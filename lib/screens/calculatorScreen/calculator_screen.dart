@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../logic/connect_db.dart';
 import 'calculator_logic.dart';
 import 'input_output_field.dart';
@@ -17,6 +19,8 @@ class CalculatorScreenState extends State<CalculatorScreen> {
   MathCalculator calc = MathCalculator();
   DataBase db = DataBase();
   bool pressToMain = false;
+  BannerAd? bannerAd;
+  bool isLoaded = false;
 
   @override
   void initState() {
@@ -28,7 +32,27 @@ class CalculatorScreenState extends State<CalculatorScreen> {
     calc.line = await db.getNumber();
     calc.mathSight = await db.getMathSight();
     calc.minus = await db.getMinus();
+    calc.haptic = await db.getVibration();
+    calc.sound = await db.getSound();
     setState(() {});
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    bannerAd = BannerAd(
+        size: AdSize.banner,
+        adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+        listener: BannerAdListener(onAdLoaded: (ad) {
+          setState(() {
+            isLoaded = true;
+          });
+        }, onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        }),
+        request: AdRequest());
+    bannerAd!.load();
   }
 
   @override
@@ -75,9 +99,14 @@ class CalculatorScreenState extends State<CalculatorScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const SizedBox(
+                      isLoaded
+                          ? SizedBox(
                         height: 50,
-                      ),
+                        child: AdWidget(
+                          ad: bannerAd!,
+                        ),
+                      )
+                          : const SizedBox(),
                       Container(
                         height: 1,
                         color: const Color.fromARGB(250, 194, 176, 176),
@@ -106,11 +135,15 @@ class CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           CustomCalcBtn(
                             calcBtnText: '%',
+                            onTap: () {
+                              calc = percent(calc);
+                              setState(() {});
+                            },
                           ),
                           CustomCalcBtn(
                             calcBtnText: '±',
-                            onTap: () async {
-                              calc = await changeMinus(calc);
+                            onTap: () {
+                              calc = changeMinus(calc);
                               setState(() {});
                             },
                           ),
@@ -244,8 +277,8 @@ class CalculatorScreenState extends State<CalculatorScreen> {
                             },
                           ),
                           BtnDeleteLust(
-                            onTap: () async {
-                              calc = await deleteLustBtn(calc);
+                            onTap: () {
+                              calc = deleteLustBtn(calc);
                               setState(() {});
                             },
                           ),
@@ -272,6 +305,7 @@ class CalculatorScreenState extends State<CalculatorScreen> {
                                 setState(() {});
                               } else {
                                 await db.setNumber(calc.line);
+                                await db.setToZero(false);
                                 Navigator.pushNamed(context, "/");
                               }
                             },

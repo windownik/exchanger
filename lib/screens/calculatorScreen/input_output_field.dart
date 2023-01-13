@@ -82,4 +82,6 @@ class MathCalculator {
   String minus = '';
   String minusSecond = '';
   String state = 'num1';
+  bool haptic = false;
+  bool sound = false;
 }

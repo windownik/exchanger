@@ -19,7 +19,7 @@ class DataBase {
     final storage = await _storage;
     final number = storage.getString("number_line");
     if (number == null) {
-      return '0';
+      return '1';
     }
     return number;
   }
@@ -65,7 +65,7 @@ class DataBase {
     final storage = await _storage;
     final curs = storage.getStringList("myCurrency");
     if (curs == null) {
-      return [];
+      return ['USD'];
     }
     return curs;
   }
@@ -113,6 +113,15 @@ class DataBase {
       return 0;
     }
     return active;
+  }
+
+  Future<bool> getToZero() async {
+    final storage = await _storage;
+    final toZero = storage.getBool("zero");
+    if (toZero == null) {
+      return true;
+    }
+    return toZero;
   }
 
   Future<void> setMathSight(String math) async {
@@ -168,5 +177,10 @@ class DataBase {
   Future<void> setMinimum(String roundNumber) async {
     final storage = await _storage;
     storage.setString("point", roundNumber);
+  }
+
+  Future<void> setToZero(bool toZero) async {
+    final storage = await _storage;
+    storage.setBool("zero", toZero);
   }
 }

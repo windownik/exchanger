@@ -1,12 +1,22 @@
 import 'dart:math';
+import 'package:audioplayers/audioplayers.dart';
+
+import 'package:flutter/services.dart';
 
 class MainScreenLogic {
   String mainNumber, roundNumber;
+  bool haptic = true, sound = true, toZero = true;
   int activeCurrency = 0;
 
   MainScreenLogic({required this.mainNumber, required this.roundNumber});
 
   void addOneNumber(String one) {
+    if (toZero) {
+      mainNumber = '0';
+    }
+    haptic ? HapticFeedback.lightImpact() : {};
+    sound ? AudioPlayer().play(AssetSource('audio/click.mp3')) : {};
+    toZero = false;
     if (mainNumber == '0') {
       mainNumber = one;
     } else {
@@ -15,10 +25,14 @@ class MainScreenLogic {
   }
 
   void clear() {
+    haptic ? HapticFeedback.lightImpact() : {};
+    sound ? AudioPlayer().play(AssetSource('audio/click.mp3')) : {};
     mainNumber = '0';
   }
 
   void backspace() {
+    haptic ? HapticFeedback.lightImpact() : {};
+    sound ? AudioPlayer().play(AssetSource('audio/click.mp3')) : {};
     if (mainNumber.length <= 1) {
       mainNumber = '0';
       return;
@@ -27,15 +41,14 @@ class MainScreenLogic {
   }
 
   void point() {
+    toZero = false;
+    haptic ? HapticFeedback.lightImpact() : {};
+    sound ? AudioPlayer().play(AssetSource('audio/click.mp3')) : {};
     if (!mainNumber.contains('.')) {
       mainNumber = '$mainNumber.';
       return;
     }
 
-  }
-
-  void setRound(String roundNumber) {
-    this.roundNumber = roundNumber;
   }
 
   double getAmount() => double.parse(mainNumber);

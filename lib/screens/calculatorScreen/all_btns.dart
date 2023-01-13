@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 
@@ -21,6 +22,7 @@ class CustomCalcBtnState extends State<CustomCalcBtn> {
   final GestureTapCallback? onTap;
   Widget btnWidget = Text('1');
   CustomCalcBtnState({this.onTap, required String calcBtnText}) {
+    HapticFeedback.lightImpact();
     btnText = calcBtnText;
     if (btnText == 'x'){
       btnWidget = SvgPicture.asset("assets/svg/multiple.svg", height: 20,);

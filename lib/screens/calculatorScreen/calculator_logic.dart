@@ -1,8 +1,13 @@
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/services.dart';
+
 import '../../logic/connect_db.dart';
 import 'input_output_field.dart';
 
 
 MathCalculator saveBtn(MathCalculator calc, String btnText) {
+  calc.haptic ? HapticFeedback.lightImpact() : {};
+  calc.sound ? AudioPlayer().play(AssetSource('audio/click.mp3')) : {};
   if (calc.state == 'math') {
     calc.state = 'num2';
     //Сохраняем для второго числа
@@ -27,6 +32,8 @@ MathCalculator saveBtn(MathCalculator calc, String btnText) {
 }
 
 MathCalculator addPoint(MathCalculator calc) {
+  calc.haptic ? HapticFeedback.lightImpact() : {};
+  calc.sound ? AudioPlayer().play(AssetSource('audio/click.mp3')) : {};
   if (calc.state == "num1") {
     String numbers = calc.line;
     if (numbers.contains('.')) {
@@ -48,6 +55,8 @@ MathCalculator addPoint(MathCalculator calc) {
 }
 
 Future<MathCalculator> clearBtn(MathCalculator calc) async {
+  calc.haptic ? HapticFeedback.lightImpact() : {};
+  calc.sound ? AudioPlayer().play(AssetSource('audio/click.mp3')) : {};
   calc.mathSight = '';
   calc.minus = '';
   calc.minusSecond = '';
@@ -60,7 +69,9 @@ Future<MathCalculator> clearBtn(MathCalculator calc) async {
   return calc;
 }
 
-Future<MathCalculator> deleteLustBtn(MathCalculator calc) async {
+MathCalculator deleteLustBtn(MathCalculator calc) {
+  calc.haptic ? HapticFeedback.lightImpact() : {};
+  calc.sound ? AudioPlayer().play(AssetSource('audio/click.mp3')) : {};
   if (calc.state == "num1") {
     String numbers = calc.line;
     numbers = numbers.substring(0, numbers.length-1);
@@ -83,7 +94,9 @@ Future<MathCalculator> deleteLustBtn(MathCalculator calc) async {
 
 }
 
-Future<MathCalculator> changeMinus(MathCalculator calc) async {
+MathCalculator changeMinus(MathCalculator calc) {
+  calc.haptic ? HapticFeedback.lightImpact() : {};
+  calc.sound ? AudioPlayer().play(AssetSource('audio/click.mp3')) : {};
   if (calc.state == "num1") {
     if (calc.minus == '') {
       calc.minus = '-';
@@ -100,7 +113,20 @@ Future<MathCalculator> changeMinus(MathCalculator calc) async {
   return calc;
 }
 
+MathCalculator percent(MathCalculator calc) {
+  calc.haptic ? HapticFeedback.lightImpact() : {};
+  calc.sound ? AudioPlayer().play(AssetSource('audio/click.mp3')) : {};
+  if (calc.state == "num1") {
+    calc.line = (double.parse(calc.line)/100).toString();
+  } else if (calc.state == "num2") {
+    calc.lineSecond = (double.parse(calc.lineSecond)/100).toString();
+  }
+  return calc;
+}
+
 MathCalculator changeSight(MathCalculator calc, String sight) {
+  calc.haptic ? HapticFeedback.lightImpact() : {};
+  calc.sound ? AudioPlayer().play(AssetSource('audio/click.mp3')) : {};
   if (calc.state == "num1" || calc.state == "math") {
     if (calc.mathSight == sight) {
       calc.mathSight = '';
@@ -120,6 +146,8 @@ MathCalculator changeSight(MathCalculator calc, String sight) {
 }
 
 MathCalculator equalMath(MathCalculator calc) {
+  calc.haptic ? HapticFeedback.lightImpact() : {};
+  calc.sound ? AudioPlayer().play(AssetSource('audio/click.mp3')) : {};
   double num1 = 0.0;
   double num2 = 0.0;
   double result = 0.0;
@@ -145,6 +173,7 @@ MathCalculator equalMath(MathCalculator calc) {
   } else if (calc.mathSight == '÷'){
     result = (num1 / num2);
   }
+  result = _round(result);
   if (result%1 == 0.0) {
     calc.line = (result.toInt()).toString();
   } else {
@@ -156,3 +185,7 @@ MathCalculator equalMath(MathCalculator calc) {
   return calc;
 }
 
+double _round (double result) {
+  result = result * 10000;
+  return (result.round()/10000);
+}

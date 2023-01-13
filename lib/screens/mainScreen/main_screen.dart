@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:exchanger/logic/connect_db.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../logic/curs.dart';
@@ -31,6 +34,8 @@ class StartScreenState extends State<StartScreen> {
   MainScreenLogic logic = MainScreenLogic(mainNumber: '0', roundNumber: '0');
   Map<String, dynamic> actualCurs = {};
   Map<String, String> myCursOnDisplay = {};
+  BannerAd? bannerAd;
+  bool isLoaded = false;
 
   DataBase db = DataBase();
   @override
@@ -43,9 +48,12 @@ class StartScreenState extends State<StartScreen> {
     logic.mainNumber = await db.getNumber();
     logic.roundNumber = await db.getRound();
     logic.activeCurrency = await db.getActiveCurrency();
+    logic.haptic = await db.getVibration();
+    logic.sound = await db.getSound();
+    logic.toZero = await db.getToZero();
     myCurrency = await db.getMyCurrency();
     currency = await getAllCurrency();
-    roundNumber = await db.getRound();
+    roundNumber = logic.roundNumber;
     buildActive();
     setState(() {});
   }
@@ -60,12 +68,15 @@ class StartScreenState extends State<StartScreen> {
         active.add(false);
       }
     }
-
   }
 
   void getCurs() async {
     String cursData = await db.getAllCurs();
-    actualCurs = jsonDecode(cursData);
+    if (cursData.isEmpty) {
+      updateCurs();
+    } else {
+      actualCurs = jsonDecode(cursData);
+    }
   }
 
   void updateCurs() async {
@@ -76,6 +87,24 @@ class StartScreenState extends State<StartScreen> {
 
   void getShowDialogVars() async {
     roundNumber = await db.getRound();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    bannerAd = BannerAd(
+        size: AdSize.banner,
+        adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+        listener: BannerAdListener(onAdLoaded: (ad) {
+          setState(() {
+            isLoaded = true;
+          });
+        }, onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        }),
+        request: AdRequest());
+    bannerAd!.load();
   }
 
   Widget customMainList(BuildContext context) {
@@ -95,6 +124,14 @@ class StartScreenState extends State<StartScreen> {
     } else {
       return Column(
         children: [
+          isLoaded
+              ? SizedBox(
+            height: 50,
+            child: AdWidget(
+              ad: bannerAd!,
+            ),
+          )
+              : const SizedBox(),
           const SizedBox(
             height: 18,
           ),
@@ -102,7 +139,6 @@ class StartScreenState extends State<StartScreen> {
             child: ListView.builder(
                 itemCount: myCurrency.length,
                 itemBuilder: (BuildContext context, int index) {
-
                   String currencyName = myCurrency[index];
                   String imgPath = flags[currencyName] ?? "";
                   String currencyCurs = getCursOfValute(
@@ -119,8 +155,9 @@ class StartScreenState extends State<StartScreen> {
                     imgPath: imgPath,
                     sideLength: active[index] ? Get.width - 20 : 137,
                     onTap: () {
-                      logic.mainNumber = myCursOnDisplay[currencyName]?? '1';
+                      logic.mainNumber = myCursOnDisplay[currencyName] ?? '1';
                       logic.activeCurrency = index;
+                      logic.toZero = true;
                       activeItem = currencyName;
                       List<bool> newActive = [];
                       for (int i = 0; i < myCurrency.length; i++) {
@@ -172,17 +209,23 @@ class StartScreenState extends State<StartScreen> {
                     },
                   );
                 });
-          }, onPressedShowDialog: () {
+          },
+          onPressedShowDialog: () {
             showDialog(
+                barrierDismissible: false,
                 context: (context),
                 builder: (BuildContext context) {
                   getShowDialogVars();
-                  return SettingsGlobal(onPressed: () async {
-                      db = DataBase();
+                  return SettingsGlobal(
+                    onPressed: () async {
+                      this.db = DataBase();
+                      logic.haptic = await db.getVibration();
+                      logic.sound = await db.getSound();
                       roundNumber = await db.getRound();
                       Navigator.of(context).pop();
-                      setState(() { });
-                    },);
+                      setState(() {});
+                    },
+                  );
                 });
           },
         ),
@@ -197,9 +240,9 @@ class StartScreenState extends State<StartScreen> {
               ])),
           child: customMainList(context),
         ),
-
         bottomNavigationBar: BottomCustomBar(
           onTapReload: () async {
+            logic.haptic ? HapticFeedback.lightImpact() : {};
             updateCurs();
             setState(() {});
           },
@@ -245,7 +288,7 @@ class StartScreenState extends State<StartScreen> {
           },
           onTapPoint: () {
             logic.point();
-          setState(() {});
+            setState(() {});
           },
           onTapBackspace: () {
             logic.backspace();
@@ -256,17 +299,19 @@ class StartScreenState extends State<StartScreen> {
             setState(() {});
           },
           line: () async {
+            logic.haptic ? HapticFeedback.lightImpact() : {};
+            logic.sound
+                ? AudioPlayer().play(AssetSource('audio/click.mp3'))
+                : {};
             DataBase db = DataBase();
-              await db.setNumber(logic.mainNumber);
-              await db.setActiveCurrency(logic.activeCurrency);
-              Timer(const Duration(milliseconds: 10), () {
-                Navigator.pushNamed(context, "/calculator");
-              }
-              );
+            await db.setNumber(logic.mainNumber);
+            await db.setActiveCurrency(logic.activeCurrency);
+            Timer(const Duration(milliseconds: 10), () {
+              Navigator.pushNamed(context, "/calculator");
+            });
           },
         ),
       ),
     );
   }
-
 }
