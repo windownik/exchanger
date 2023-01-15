@@ -19,7 +19,7 @@ class SettingsGlobal extends StatelessWidget {
           data: mediaQueryData.copyWith(textScaleFactor: 1),
           child: Container(
             height: 300,
-            width: 340,
+            width: 350,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(8)),
               color: Color.fromRGBO(228, 255, 255, 1),
@@ -62,10 +62,11 @@ class SettingsRowTittle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        const SizedBox(
-          width: 100,
-        ),
+        // const SizedBox(
+        //   width: 100,
+        // ),
         const Text(
           'SETTINGS',
           style: TextStyle(
@@ -74,7 +75,7 @@ class SettingsRowTittle extends StatelessWidget {
               fontWeight: FontWeight.w400),
         ),
         const SizedBox(
-          width: 45,
+          width: 40,
         ),
         IconButton(
             onPressed: onPressed,
