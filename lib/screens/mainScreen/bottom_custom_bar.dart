@@ -316,7 +316,7 @@ class CustomCalcBtnState extends State<CustomCalcBtn> {
               style: const TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.w500,
-                color: Color.fromRGBO(255, 255, 255, 1.0),
+                color: Color.fromRGBO(171, 234, 255, 1.0),
               ),
             ),
           ),
