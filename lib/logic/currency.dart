@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import '../screens/settings/settings_screen.dart';
 
 class CustomCurrencyCard extends StatefulWidget {
+  const CustomCurrencyCard({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return CustomCurrencyCardState();
@@ -19,13 +21,13 @@ class CustomCurrencyCardState extends State<CustomCurrencyCard> {
 
   @override
   Widget build(BuildContext context) {
+
     String imgPath = SettingsCardInherith.of(context)?.imgPath ?? '';
     String currencyShort = SettingsCardInherith.of(context)?.currencyShort ?? '';
     String currencyDesc = SettingsCardInherith.of(context)?.currencyDesc ?? '';
     if (!tap) {
       showCard = SettingsCardInherith.of(context)?.showCard ?? false;
     }
-
     return GestureDetector(
         onTap: () async {
           List<String> myCurrency = await db.getMyCurrency();
@@ -90,7 +92,7 @@ class CardCurrencyInfo extends StatelessWidget {
                   width: 34,
                   height: 34,
                   decoration: BoxDecoration(
-                      color: Colors.orange,
+                      color: Colors.transparent,
                       shape: BoxShape.circle,
                       image: DecorationImage(
                           image: AssetImage("assets/flags/$imgPath"),

@@ -158,26 +158,43 @@ class CustomSettingsState extends State<CustomSettings> {
           ),
           currency.isNotEmpty
               ? Flexible(
-                  child: ListView.builder(
-                      itemCount: currency.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        String imgPath = currency[index]['flag'];
-                        String currencyShort = currency[index]['sight'];
-                        String currencyDesc = currency[index]['desc'];
-                        bool showCard = false;
-
-                        if (myCurrency.contains(currencyShort)) {
-                          showCard = true;
-                        }
-                        // print([imgPath, currencyShort, currencyDesc]);
-                        return SettingsCardInherith(
-                          imgPath: imgPath,
-                          currencyShort: currencyShort,
-                          currencyDesc: currencyDesc,
-                          showCard: showCard,
-                          child: CustomCurrencyCard(),
-                        );
-                      }))
+                  child:
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          for (int i = 0; i < currency.length; i++)...{
+                          SettingsCardInherith(
+                                  imgPath: currency[i]['flag'],
+                                  currencyShort: currency[i]['sight'],
+                                  currencyDesc: currency[i]['desc'],
+                                  showCard: myCurrency.contains(currency[i]['sight']) ? true : false,
+                                  child: const CustomCurrencyCard(),
+                                )
+                          }
+                        ],
+                      ),
+                    )
+                  // ListView.builder(
+                  //     itemCount: currency.length,
+                  //     itemBuilder: (BuildContext context, int index) {
+                  //       String imgPath = currency[index]['flag'];
+                  //       String currencyShort = currency[index]['sight'];
+                  //       String currencyDesc = currency[index]['desc'];
+                  //       bool showCard = false;
+                  //
+                  //       if (myCurrency.contains(currencyShort)) {
+                  //         showCard = true;
+                  //       }
+                  //       // print([imgPath, currencyShort, currencyDesc]);
+                  //       return SettingsCardInherith(
+                  //         imgPath: imgPath,
+                  //         currencyShort: currencyShort,
+                  //         currencyDesc: currencyDesc,
+                  //         showCard: showCard,
+                  //         child: CustomCurrencyCard(),
+                  //       );
+                  //     })
+          )
               : const Text("Loading...")
         ],
       ),

@@ -49,7 +49,7 @@ class MoneyCard extends StatelessWidget {
                         width: 26,
                         height: 26,
                         decoration: BoxDecoration(
-                            color: Colors.orange,
+                            color: Colors.transparent,
                             shape: BoxShape.circle,
                             image: DecorationImage(
                                 image: AssetImage("assets/flags/$imgPath"),
