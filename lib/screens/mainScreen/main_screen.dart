@@ -126,7 +126,7 @@ class StartScreenState extends State<StartScreen> {
         children: [
           isLoaded
               ? SizedBox(
-            height: 50,
+            height: 60,
             child: AdWidget(
               ad: bannerAd!,
             ),
@@ -136,7 +136,43 @@ class StartScreenState extends State<StartScreen> {
             height: 18,
           ),
           Flexible(
-            child: ListView.builder(
+            child:
+            // SingleChildScrollView(
+            //   child:
+            //   Column(
+            //     children: [
+            //       for (int i = 0; i < myCurrency.length; i++)...{
+            //           MoneyCard(currencyName: myCurrency[i],
+            //             number: getCursOfValute(
+            //                 activeItem: activeItem,
+            //                 index: i,
+            //                 myCurrency: myCurrency,
+            //                 actualCurs: actualCurs,
+            //                 amount: logic.getAmount(),
+            //                 roundNumber: roundNumber),
+            //             imgPath: flags[myCurrency[i]] ?? "",
+            //             sideLength: active[i] ? Get.width - 20 : 137,
+            //             onTap: () {
+            //               logic.mainNumber = myCursOnDisplay[myCurrency[i]] ?? '1';
+            //               logic.activeCurrency = i;
+            //               logic.toZero = true;
+            //               activeItem = myCurrency[i];
+            //               List<bool> newActive = [];
+            //               for (int i = 0; i < myCurrency.length; i++) {
+            //               newActive.add(false);
+            //               }
+            //               newActive.removeAt(i);
+            //               newActive.insert(i, true);
+            //               active.clear();
+            //               active = newActive;
+            //               setState(() {});
+            //               },
+            //           )
+            //       }
+            //     ],
+            //   ),
+            // )
+            ListView.builder(
                 itemCount: myCurrency.length,
                 itemBuilder: (BuildContext context, int index) {
                   String currencyName = myCurrency[index];

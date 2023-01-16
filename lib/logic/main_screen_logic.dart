@@ -127,8 +127,10 @@ String _activeItemNotRub(
 String roundCurs (String currencyCurs, roundNumber) {
   String roundedCurs = '';
   if (roundNumber == 'Auto') {
+    int roundNumb = 3;
     double cursDouble = double.parse(currencyCurs);
-    roundedCurs = cursDouble.round().toString();
+    double currencyCursInt = cursDouble * pow(10, roundNumb);
+    roundedCurs = (currencyCursInt.round()/pow(10, roundNumb)).toString();
   } else if (roundNumber == '0') {
     double cursDouble = double.parse(currencyCurs);
     roundedCurs = cursDouble.round().toString();

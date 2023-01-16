@@ -19,7 +19,7 @@ class SettingsGlobal extends StatelessWidget {
           data: mediaQueryData.copyWith(textScaleFactor: 1),
           child: Container(
             height: 300,
-            width: 350,
+            width: 340,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(8)),
               color: Color.fromRGBO(228, 255, 255, 1),
@@ -61,29 +61,33 @@ class SettingsRowTittle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        // const SizedBox(
-        //   width: 100,
-        // ),
-        const Text(
-          'SETTINGS',
-          style: TextStyle(
-              fontSize: 25,
-              color: Color.fromRGBO(29, 127, 129, 1),
-              fontWeight: FontWeight.w400),
-        ),
-        const SizedBox(
-          width: 40,
-        ),
-        IconButton(
-            onPressed: onPressed,
-            icon: const Icon(
-              Icons.close,
-              color: Color.fromRGBO(77, 77, 77, 1),
-            ))
-      ],
+    return SizedBox(
+      width: 320,
+      height: 30,
+      child: Stack(
+        children: [
+          const Center(
+            child: Text(
+              'SETTINGS',
+              style: TextStyle(
+                  fontSize: 25,
+                  color: Color.fromRGBO(29, 127, 129, 1),
+                  fontWeight: FontWeight.w400),
+            ),
+          ),
+
+          Positioned(
+            right: 0,
+            top: -5,
+            child: IconButton(
+                onPressed: onPressed,
+                icon: const Icon(
+                  Icons.close,
+                  color: Color.fromRGBO(77, 77, 77, 1),
+                )),
+          )
+        ],
+      ),
     );
   }
 }
@@ -114,50 +118,48 @@ class _MinimumAccuracyRow extends State<MinimumAccuracyRow> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const SizedBox(
-          width: 20,
-        ),
-        const Text(
-          'Minimum accuracy',
-          style: TextStyle(
-              fontSize: 20,
-              color: Color.fromRGBO(0, 0, 0, 1),
-              fontWeight: FontWeight.w400),
-        ),
-        const SizedBox(
-          width: 60,
-        ),
-        DropdownButton<String>(
-          value: dropdownValue,
-          icon: const Icon(
-            Icons.arrow_forward_ios,
-            color: Color.fromRGBO(121, 121, 121, 1),
-            size: 15,
+    return SizedBox(
+      width: 280,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            'Minimum accuracy',
+            style: TextStyle(
+                fontSize: 20,
+                color: Color.fromRGBO(0, 0, 0, 1),
+                fontWeight: FontWeight.w400),
           ),
-          elevation: 8,
-          style: const TextStyle(color: Color.fromRGBO(121, 121, 121, 1)),
-          onChanged: (String? value) async {
-            // This is called when the user selects an item.
-            dropdownValue = value!;
-            await db.setMinimum(value);
-            setState(() {});
-          },
-          underline: Container(
-            height: 1,
-            color: Colors.transparent,
-          ),
-          borderRadius: BorderRadius.circular(8),
-          dropdownColor: const Color.fromRGBO(224, 226, 225, 1),
-          items: list.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        )
-      ],
+          DropdownButton<String>(
+            value: dropdownValue,
+            icon: const Icon(
+              Icons.arrow_forward_ios,
+              color: Color.fromRGBO(121, 121, 121, 1),
+              size: 15,
+            ),
+            elevation: 8,
+            style: const TextStyle(color: Color.fromRGBO(121, 121, 121, 1)),
+            onChanged: (String? value) async {
+              // This is called when the user selects an item.
+              dropdownValue = value!;
+              await db.setMinimum(value);
+              setState(() {});
+            },
+            underline: Container(
+              height: 1,
+              color: Colors.transparent,
+            ),
+            borderRadius: BorderRadius.circular(8),
+            dropdownColor: const Color.fromRGBO(224, 226, 225, 1),
+            items: list.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          )
+        ],
+      ),
     );
   }
 }
@@ -199,57 +201,56 @@ class _SoundRow extends State<SoundRow> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const SizedBox(
-          width: 20,
-        ),
-        const Text(
-          'Sound',
-          style: TextStyle(
-              fontSize: 20,
-              color: Color.fromRGBO(0, 0, 0, 1),
-              fontWeight: FontWeight.w400),
-        ),
-        const SizedBox(
-          width: 145,
-        ),
-        Container(
-          width: 76.0,
-          height: 36.0,
-          decoration: BoxDecoration(
-            border: Border.all(color: const Color.fromRGBO(29, 127, 129, 1)),
-            borderRadius: const BorderRadius.all(Radius.circular(18)),
+    return SizedBox(
+      width: 280,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            'Sound',
+            style: TextStyle(
+                fontSize: 20,
+                color: Color.fromRGBO(0, 0, 0, 1),
+                fontWeight: FontWeight.w400),
           ),
-          alignment: Alignment.center,
-          child: AdvancedSwitch(
-            controller: _controller,
-            activeColor: Colors.transparent,
-            inactiveColor: Colors.transparent,
-            activeChild: const Text(
-              'ON',
-              style: TextStyle(fontSize: 16, color: Colors.black),
+
+          Container(
+            width: 76.0,
+            height: 36.0,
+            decoration: BoxDecoration(
+              border: Border.all(color: const Color.fromRGBO(29, 127, 129, 1)),
+              borderRadius: const BorderRadius.all(Radius.circular(18)),
             ),
-            inactiveChild: const Text(
-              'OFF',
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(15)),
-            width: 68.4,
-            height: 32.4,
-            enabled: true,
-            disabledOpacity: 0.5,
-            thumb: Container(
-              width: 30,
-              height: 30,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                color: Color.fromRGBO(29, 127, 129, 1),
+            alignment: Alignment.center,
+            child: AdvancedSwitch(
+              controller: _controller,
+              activeColor: Colors.transparent,
+              inactiveColor: Colors.transparent,
+              activeChild: const Text(
+                'ON',
+                style: TextStyle(fontSize: 16, color: Colors.black),
+              ),
+              inactiveChild: const Text(
+                'OFF',
+                style: TextStyle(fontSize: 16, color: Colors.black),
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(15)),
+              width: 68.4,
+              height: 32.4,
+              enabled: true,
+              disabledOpacity: 0.5,
+              thumb: Container(
+                width: 30,
+                height: 30,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  color: Color.fromRGBO(29, 127, 129, 1),
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -293,57 +294,56 @@ class _VibrationRow extends State<VibrationRow> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const SizedBox(
-          width: 20,
-        ),
-        const Text(
-          'Vibration response',
-          style: TextStyle(
-              fontSize: 20,
-              color: Color.fromRGBO(0, 0, 0, 1),
-              fontWeight: FontWeight.w400),
-        ),
-        const SizedBox(
-          width: 33,
-        ),
-        Container(
-          width: 76.0,
-          height: 36.0,
-          decoration: BoxDecoration(
-            border: Border.all(color: const Color.fromRGBO(29, 127, 129, 1)),
-            borderRadius: const BorderRadius.all(Radius.circular(18)),
+    return SizedBox(
+      width: 280,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            'Vibration response',
+            style: TextStyle(
+                fontSize: 20,
+                color: Color.fromRGBO(0, 0, 0, 1),
+                fontWeight: FontWeight.w400),
           ),
-          alignment: Alignment.center,
-          child: AdvancedSwitch(
-            controller: _controller,
-            activeColor: Colors.transparent,
-            inactiveColor: Colors.transparent,
-            activeChild: const Text(
-              'ON',
-              style: TextStyle(fontSize: 16, color: Colors.black),
+
+          Container(
+            width: 76.0,
+            height: 36.0,
+            decoration: BoxDecoration(
+              border: Border.all(color: const Color.fromRGBO(29, 127, 129, 1)),
+              borderRadius: const BorderRadius.all(Radius.circular(18)),
             ),
-            inactiveChild: const Text(
-              'OFF',
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(15)),
-            width: 68.4,
-            height: 32.4,
-            enabled: true,
-            disabledOpacity: 0.5,
-            thumb: Container(
-              width: 30,
-              height: 30,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                color: Color.fromRGBO(29, 127, 129, 1),
+            alignment: Alignment.center,
+            child: AdvancedSwitch(
+              controller: _controller,
+              activeColor: Colors.transparent,
+              inactiveColor: Colors.transparent,
+              activeChild: const Text(
+                'ON',
+                style: TextStyle(fontSize: 16, color: Colors.black),
+              ),
+              inactiveChild: const Text(
+                'OFF',
+                style: TextStyle(fontSize: 16, color: Colors.black),
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(15)),
+              width: 68.4,
+              height: 32.4,
+              enabled: true,
+              disabledOpacity: 0.5,
+              thumb: Container(
+                width: 30,
+                height: 30,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  color: Color.fromRGBO(29, 127, 129, 1),
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
