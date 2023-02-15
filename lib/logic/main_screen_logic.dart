@@ -19,6 +19,8 @@ class MainScreenLogic {
     toZero = false;
     if (mainNumber == '0') {
       mainNumber = one;
+    } else if (double.parse("$mainNumber$one") > 10000000000000.0) {
+      mainNumber = mainNumber;
     } else {
       mainNumber = "$mainNumber$one";
     }

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:exchanger/logic/connect_db.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +33,7 @@ class StartScreenState extends State<StartScreen> {
   MainScreenLogic logic = MainScreenLogic(mainNumber: '0', roundNumber: '0');
   Map<String, dynamic> actualCurs = {};
   Map<String, String> myCursOnDisplay = {};
-  BannerAd? bannerAd;
+  // BannerAd? bannerAd;
   bool isLoaded = false;
 
   DataBase db = DataBase();
@@ -89,23 +88,23 @@ class StartScreenState extends State<StartScreen> {
     roundNumber = await db.getRound();
   }
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    bannerAd = BannerAd(
-        size: AdSize.banner,
-        adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-        listener: BannerAdListener(onAdLoaded: (ad) {
-          setState(() {
-            isLoaded = true;
-          });
-        }, onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        }),
-        request: AdRequest());
-    bannerAd!.load();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   // TODO: implement didChangeDependencies
+  //   super.didChangeDependencies();
+  //   bannerAd = BannerAd(
+  //       size: AdSize.banner,
+  //       adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+  //       listener: BannerAdListener(onAdLoaded: (ad) {
+  //         setState(() {
+  //           isLoaded = true;
+  //         });
+  //       }, onAdFailedToLoad: (ad, error) {
+  //         ad.dispose();
+  //       }),
+  //       request: AdRequest());
+  //   bannerAd!.load();
+  // }
 
   Widget customMainList(BuildContext context) {
     activeItem = activeItem.isEmpty ? myCurrency[0] : activeItem;
@@ -124,14 +123,14 @@ class StartScreenState extends State<StartScreen> {
     } else {
       return Column(
         children: [
-          isLoaded
-              ? SizedBox(
-            height: 60,
-            child: AdWidget(
-              ad: bannerAd!,
-            ),
-          )
-              : const SizedBox(),
+          // isLoaded
+          //     ? SizedBox(
+          //   height: 60,
+          //   child: AdWidget(
+          //     ad: bannerAd!,
+          //   ),
+          // )
+          //     : const SizedBox(),
           const SizedBox(
             height: 18,
           ),

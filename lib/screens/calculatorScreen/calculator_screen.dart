@@ -19,7 +19,7 @@ class CalculatorScreenState extends State<CalculatorScreen> {
   MathCalculator calc = MathCalculator();
   DataBase db = DataBase();
   bool pressToMain = false;
-  BannerAd? bannerAd;
+  // BannerAd? bannerAd;
   bool isLoaded = false;
 
   @override
@@ -38,22 +38,22 @@ class CalculatorScreenState extends State<CalculatorScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    bannerAd = BannerAd(
-        size: AdSize.banner,
-        adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-        listener: BannerAdListener(onAdLoaded: (ad) {
-          setState(() {
-            isLoaded = true;
-          });
-        }, onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        }),
-        request: AdRequest());
-    bannerAd!.load();
-  }
+  // void didChangeDependencies() {
+  //   // TODO: implement didChangeDependencies
+  //   super.didChangeDependencies();
+  //   bannerAd = BannerAd(
+  //       size: AdSize.banner,
+  //       adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+  //       listener: BannerAdListener(onAdLoaded: (ad) {
+  //         setState(() {
+  //           isLoaded = true;
+  //         });
+  //       }, onAdFailedToLoad: (ad, error) {
+  //         ad.dispose();
+  //       }),
+  //       request: AdRequest());
+  //   bannerAd!.load();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -99,14 +99,14 @@ class CalculatorScreenState extends State<CalculatorScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      isLoaded
-                          ? SizedBox(
-                        height: 50,
-                        child: AdWidget(
-                          ad: bannerAd!,
-                        ),
-                      )
-                          : const SizedBox(),
+                      // isLoaded
+                      //     ? SizedBox(
+                      //   height: 50,
+                      //   child: AdWidget(
+                      //     ad: bannerAd!,
+                      //   ),
+                      // )
+                      //     : const SizedBox(),
                       Container(
                         height: 1,
                         color: const Color.fromARGB(250, 194, 176, 176),
