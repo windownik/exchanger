@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../logic/connect_db.dart';
 import 'calculator_logic.dart';
 import 'input_output_field.dart';
@@ -36,24 +35,6 @@ class CalculatorScreenState extends State<CalculatorScreen> {
     calc.sound = await db.getSound();
     setState(() {});
   }
-
-  @override
-  // void didChangeDependencies() {
-  //   // TODO: implement didChangeDependencies
-  //   super.didChangeDependencies();
-  //   bannerAd = BannerAd(
-  //       size: AdSize.banner,
-  //       adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-  //       listener: BannerAdListener(onAdLoaded: (ad) {
-  //         setState(() {
-  //           isLoaded = true;
-  //         });
-  //       }, onAdFailedToLoad: (ad, error) {
-  //         ad.dispose();
-  //       }),
-  //       request: AdRequest());
-  //   bannerAd!.load();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -99,19 +80,6 @@ class CalculatorScreenState extends State<CalculatorScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // isLoaded
-                      //     ? SizedBox(
-                      //   height: 50,
-                      //   child: AdWidget(
-                      //     ad: bannerAd!,
-                      //   ),
-                      // )
-                      //     : const SizedBox(),
-                      Container(
-                        height: 1,
-                        color: const Color.fromARGB(250, 194, 176, 176),
-                      ),
-                      // const SizedBox(height: 10,),
                       InputOutputField(
                         calc: calc,
                       ),

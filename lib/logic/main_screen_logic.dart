@@ -3,6 +3,8 @@ import 'package:audioplayers/audioplayers.dart';
 
 import 'package:flutter/services.dart';
 
+import 'connect_db.dart';
+
 class MainScreenLogic {
   String mainNumber, roundNumber;
   bool haptic = true, sound = true, toZero = true;
@@ -10,7 +12,8 @@ class MainScreenLogic {
 
   MainScreenLogic({required this.mainNumber, required this.roundNumber});
 
-  void addOneNumber(String one) {
+  void addOneNumber(String one) async {
+    DataBase db = DataBase();
     if (toZero) {
       mainNumber = '0';
     }
@@ -24,6 +27,7 @@ class MainScreenLogic {
     } else {
       mainNumber = "$mainNumber$one";
     }
+    await db.setNumber(mainNumber);
   }
 
   void clear() {

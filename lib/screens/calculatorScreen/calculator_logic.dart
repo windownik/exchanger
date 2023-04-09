@@ -25,7 +25,12 @@ MathCalculator saveBtn(MathCalculator calc, String btnText) {
     } else if (calc.line.startsWith('0')){
       calc.line = btnText;
     } else {
-      calc.line = "${calc.line}$btnText";
+      if (double.parse(calc.line) > 10000000000000.0) {
+        calc.line = calc.line;
+      } else {
+        calc.line = "${calc.line}$btnText";
+      }
+
     }
   }
   return calc;

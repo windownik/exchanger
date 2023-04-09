@@ -37,6 +37,7 @@ class StartScreenState extends State<StartScreen> {
   bool isLoaded = false;
 
   DataBase db = DataBase();
+
   @override
   void initState() {
     getStartState();
@@ -54,6 +55,7 @@ class StartScreenState extends State<StartScreen> {
     currency = await getAllCurrency();
     roundNumber = logic.roundNumber;
     buildActive();
+    getCurs();
     setState(() {});
   }
 
@@ -70,41 +72,26 @@ class StartScreenState extends State<StartScreen> {
   }
 
   void getCurs() async {
-    String cursData = await db.getAllCurs();
-    if (cursData.isEmpty) {
+    try {
       updateCurs();
-    } else {
+    } catch (e) {
+      String cursData = await db.getAllCurs();
       actualCurs = jsonDecode(cursData);
     }
+    setState(() { });
   }
 
   void updateCurs() async {
     String cursData = await getMosCurs();
     await db.setAllCurs(cursData);
     actualCurs = jsonDecode(cursData);
+    setState(() { });
   }
 
   void getShowDialogVars() async {
     roundNumber = await db.getRound();
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   // TODO: implement didChangeDependencies
-  //   super.didChangeDependencies();
-  //   bannerAd = BannerAd(
-  //       size: AdSize.banner,
-  //       adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-  //       listener: BannerAdListener(onAdLoaded: (ad) {
-  //         setState(() {
-  //           isLoaded = true;
-  //         });
-  //       }, onAdFailedToLoad: (ad, error) {
-  //         ad.dispose();
-  //       }),
-  //       request: AdRequest());
-  //   bannerAd!.load();
-  // }
 
   Widget customMainList(BuildContext context) {
     activeItem = activeItem.isEmpty ? myCurrency[0] : activeItem;
@@ -123,54 +110,11 @@ class StartScreenState extends State<StartScreen> {
     } else {
       return Column(
         children: [
-          // isLoaded
-          //     ? SizedBox(
-          //   height: 60,
-          //   child: AdWidget(
-          //     ad: bannerAd!,
-          //   ),
-          // )
-          //     : const SizedBox(),
           const SizedBox(
             height: 18,
           ),
           Flexible(
             child:
-            // SingleChildScrollView(
-            //   child:
-            //   Column(
-            //     children: [
-            //       for (int i = 0; i < myCurrency.length; i++)...{
-            //           MoneyCard(currencyName: myCurrency[i],
-            //             number: getCursOfValute(
-            //                 activeItem: activeItem,
-            //                 index: i,
-            //                 myCurrency: myCurrency,
-            //                 actualCurs: actualCurs,
-            //                 amount: logic.getAmount(),
-            //                 roundNumber: roundNumber),
-            //             imgPath: flags[myCurrency[i]] ?? "",
-            //             sideLength: active[i] ? Get.width - 20 : 137,
-            //             onTap: () {
-            //               logic.mainNumber = myCursOnDisplay[myCurrency[i]] ?? '1';
-            //               logic.activeCurrency = i;
-            //               logic.toZero = true;
-            //               activeItem = myCurrency[i];
-            //               List<bool> newActive = [];
-            //               for (int i = 0; i < myCurrency.length; i++) {
-            //               newActive.add(false);
-            //               }
-            //               newActive.removeAt(i);
-            //               newActive.insert(i, true);
-            //               active.clear();
-            //               active = newActive;
-            //               setState(() {});
-            //               },
-            //           )
-            //       }
-            //     ],
-            //   ),
-            // )
             ListView.builder(
                 itemCount: myCurrency.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -215,7 +159,7 @@ class StartScreenState extends State<StartScreen> {
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
-    getCurs();
+
     return MediaQuery(
       data: mediaQueryData.copyWith(textScaleFactor: 1),
       child: Scaffold(
@@ -253,7 +197,7 @@ class StartScreenState extends State<StartScreen> {
                   getShowDialogVars();
                   return SettingsGlobal(
                     onPressed: () async {
-                      this.db = DataBase();
+                      db = DataBase();
                       logic.haptic = await db.getVibration();
                       logic.sound = await db.getSound();
                       roundNumber = await db.getRound();
