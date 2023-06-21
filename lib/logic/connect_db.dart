@@ -52,12 +52,9 @@ class DataBase {
     return state;
   }
 
-  Future<String> getAllCurs() async {
+  Future<String?> getAllCurs() async {
     final storage = await _storage;
     final curs = storage.getString("curs");
-    if (curs == null) {
-      return '';
-    }
     return curs;
   }
 

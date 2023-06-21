@@ -1,13 +1,12 @@
 import 'package:exchanger/logic/connect_db.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 
 const List<String> list = <String>['Auto', '0', '1', '2', '3', '4', '5', '6'];
 
 class SettingsGlobal extends StatelessWidget {
-  VoidCallback onPressed;
-  SettingsGlobal({super.key, required this.onPressed});
+  final VoidCallback onPressed;
+  const SettingsGlobal({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

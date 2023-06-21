@@ -72,20 +72,22 @@ class StartScreenState extends State<StartScreen> {
   }
 
   void getCurs() async {
-    try {
-      updateCurs();
-    } catch (e) {
-      String cursData = await db.getAllCurs();
-      actualCurs = jsonDecode(cursData);
-    }
-    setState(() { });
+    await db.getAllCurs().then((cursData) {
+      if (cursData != null) {
+        actualCurs = jsonDecode(cursData);
+        setState(() { });
+      } else {
+        updateCurs();
+      }
+    });
   }
 
   void updateCurs() async {
-    String cursData = await getMosCurs();
-    await db.setAllCurs(cursData);
-    actualCurs = jsonDecode(cursData);
-    setState(() { });
+    await getMosCurs().then((cursData) async {
+      await db.setAllCurs(cursData);
+      actualCurs = jsonDecode(cursData);
+      setState(() { });
+    });
   }
 
   void getShowDialogVars() async {
