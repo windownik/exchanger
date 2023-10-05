@@ -1,8 +1,6 @@
-import 'package:exchanger/screens/calculatorScreen/calculator_screen.dart';
-import 'package:exchanger/screens/mainScreen/main_screen.dart';
+import 'package:exchanger/screens/new_screens/main_screen/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,8 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'Exchanger',
       initialRoute: '/',
       routes: {
-        '/': (context) => const StartScreen(),
-        '/calculator': (context) => const CalculatorScreen(),
+        '/': (context) => const MainScreen(),
       },
     );
   }

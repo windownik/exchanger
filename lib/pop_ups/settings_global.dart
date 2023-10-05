@@ -1,16 +1,39 @@
 import 'package:exchanger/logic/connect_db.dart';
+import 'package:exchanger/logic/my_colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 
-const List<String> list = <String>['Auto', '0', '1', '2', '3', '4', '5', '6'];
 
-class SettingsGlobal extends StatelessWidget {
-  final VoidCallback onPressed;
-  const SettingsGlobal({super.key, required this.onPressed});
+const List<String> list = <String>['Auto',];
+
+class AppSettings extends StatefulWidget {
+  final bool sound;
+  final bool vibrate;
+  
+  const AppSettings({super.key, required this.sound, required this.vibrate,});
+
+  @override
+  State<AppSettings> createState() => _AppSettingsState();
+}
+
+class _AppSettingsState extends State<AppSettings> {
+
+  late bool sound;
+  late bool vibrate;
+
+  @override
+  void initState() {
+    sound = widget.sound;
+    vibrate = widget.vibrate;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
+    DataBase db = DataBase();
+
+
     return AlertDialog(
       contentPadding: EdgeInsets.zero,
       backgroundColor: Colors.transparent,
@@ -29,7 +52,9 @@ class SettingsGlobal extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                SettingsRowTittle(onPressed: onPressed,),
+                SettingsRowTittle(onPressed: (){
+                  Navigator.of(context).pop();
+                },),
                 const SizedBox(
                   height: 10,
                 ),
@@ -42,11 +67,22 @@ class SettingsGlobal extends StatelessWidget {
                 const SizedBox(
                   height: 33,
                 ),
-                const SoundRow(),
+                SoundRow(sound: sound,
+                    onChanged: (bool value) {
+                  db.setSound(value);
+                  sound = value;
+                  setState(() {});
+                }),
                 const SizedBox(
                   height: 20,
                 ),
-                const VibrationRow()
+                VibrationRow(vibrate: vibrate,
+                    onChanged: (bool value) {
+                      db.setVibration(value);
+                      vibrate = value;
+                      setState(() {});
+                    }
+                )
               ],
             ),
           )),
@@ -55,8 +91,8 @@ class SettingsGlobal extends StatelessWidget {
 }
 
 class SettingsRowTittle extends StatelessWidget {
-  VoidCallback onPressed;
-  SettingsRowTittle({super.key, required this.onPressed});
+  final VoidCallback onPressed;
+  const SettingsRowTittle({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -163,43 +199,14 @@ class _MinimumAccuracyRow extends State<MinimumAccuracyRow> {
   }
 }
 
-class SoundRow extends StatefulWidget {
-  const SoundRow({super.key});
-
-  @override
-  State<StatefulWidget> createState() {
-    return _SoundRow();
-  }
-}
-
-class _SoundRow extends State<SoundRow> {
-  String dropdownValue = list.first;
-  DataBase db = DataBase();
-
-  final _controller = ValueNotifier<bool>(false);
-// ...
-  @override
-  void initState() {
-    readSound();
-    super.initState();
-    _controller.addListener(() {
-      setState(() {
-        saveSound(_controller.value);
-      });
-    });
-  }
-
-  void saveSound(bool soundBool) async {
-    await db.setSound(soundBool);
-  }
-
-  void readSound() async {
-    bool soundBool = await db.getSound();
-    _controller.value = soundBool;
-  }
+class SoundRow extends StatelessWidget {
+  final bool sound;
+  final ValueChanged<bool>? onChanged;
+  const SoundRow({super.key, required this.sound, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
+
     return SizedBox(
       width: 280,
       child: Row(
@@ -209,43 +216,22 @@ class _SoundRow extends State<SoundRow> {
             'Sound',
             style: TextStyle(
                 fontSize: 20,
-                color: Color.fromRGBO(0, 0, 0, 1),
+                color: MyColors.black,
                 fontWeight: FontWeight.w400),
           ),
 
           Container(
-            width: 76.0,
+            width: 58.0,
             height: 36.0,
             decoration: BoxDecoration(
-              border: Border.all(color: const Color.fromRGBO(29, 127, 129, 1)),
+              border: Border.all(color:  MyColors.primary),
               borderRadius: const BorderRadius.all(Radius.circular(18)),
             ),
             alignment: Alignment.center,
-            child: AdvancedSwitch(
-              controller: _controller,
-              activeColor: Colors.transparent,
-              inactiveColor: Colors.transparent,
-              activeChild: const Text(
-                'ON',
-                style: TextStyle(fontSize: 16, color: Colors.black),
-              ),
-              inactiveChild: const Text(
-                'OFF',
-                style: TextStyle(fontSize: 16, color: Colors.black),
-              ),
-              borderRadius: const BorderRadius.all(Radius.circular(15)),
-              width: 68.4,
-              height: 32.4,
-              enabled: true,
-              disabledOpacity: 0.5,
-              thumb: Container(
-                width: 30,
-                height: 30,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  color: Color.fromRGBO(29, 127, 129, 1),
-                ),
-              ),
+            child: CupertinoSwitch(
+              activeColor: MyColors.primary,
+              value: sound,
+              onChanged: onChanged,
             ),
           ),
         ],
@@ -254,45 +240,14 @@ class _SoundRow extends State<SoundRow> {
   }
 }
 
-class VibrationRow extends StatefulWidget {
-  const VibrationRow({super.key});
-
-  @override
-  State<StatefulWidget> createState() {
-    return _VibrationRow();
-  }
-}
-
-class _VibrationRow extends State<VibrationRow> {
-  String dropdownValue = list.first;
-  bool switchBool = true;
-
-  DataBase db = DataBase();
-
-  final _controller = ValueNotifier<bool>(false);
-
-  @override
-  void initState() {
-    readVibration();
-    super.initState();
-    _controller.addListener(() {
-      setState(() {
-        saveVibration(_controller.value);
-      });
-    });
-  }
-
-  void saveVibration(bool soundBool) async {
-    await db.setVibration(soundBool);
-  }
-
-  void readVibration() async {
-    bool vibration = await db.getVibration();
-    _controller.value = vibration;
-  }
+class VibrationRow extends StatelessWidget {
+  final bool vibrate;
+  final ValueChanged<bool>? onChanged;
+  const VibrationRow({super.key, required this.vibrate, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
+
     return SizedBox(
       width: 280,
       child: Row(
@@ -302,43 +257,22 @@ class _VibrationRow extends State<VibrationRow> {
             'Vibration response',
             style: TextStyle(
                 fontSize: 20,
-                color: Color.fromRGBO(0, 0, 0, 1),
+                color: MyColors.black,
                 fontWeight: FontWeight.w400),
           ),
 
           Container(
-            width: 76.0,
+            width: 58.0,
             height: 36.0,
             decoration: BoxDecoration(
-              border: Border.all(color: const Color.fromRGBO(29, 127, 129, 1)),
+              border: Border.all(color:  MyColors.primary),
               borderRadius: const BorderRadius.all(Radius.circular(18)),
             ),
             alignment: Alignment.center,
-            child: AdvancedSwitch(
-              controller: _controller,
-              activeColor: Colors.transparent,
-              inactiveColor: Colors.transparent,
-              activeChild: const Text(
-                'ON',
-                style: TextStyle(fontSize: 16, color: Colors.black),
-              ),
-              inactiveChild: const Text(
-                'OFF',
-                style: TextStyle(fontSize: 16, color: Colors.black),
-              ),
-              borderRadius: const BorderRadius.all(Radius.circular(15)),
-              width: 68.4,
-              height: 32.4,
-              enabled: true,
-              disabledOpacity: 0.5,
-              thumb: Container(
-                width: 30,
-                height: 30,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  color: Color.fromRGBO(29, 127, 129, 1),
-                ),
-              ),
+            child: CupertinoSwitch(
+              activeColor: MyColors.primary,
+              value: vibrate,
+              onChanged: onChanged,
             ),
           ),
         ],
@@ -346,4 +280,3 @@ class _VibrationRow extends State<VibrationRow> {
     );
   }
 }
-

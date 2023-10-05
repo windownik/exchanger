@@ -3,97 +3,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../logic/connect_db.dart';
 
-class BottomCustomBar extends StatefulWidget {
-  GestureTapCallback onTapReload;
-  GestureTapCallback onTap1;
-  GestureTapCallback onTap2;
-  GestureTapCallback onTap3;
-  GestureTapCallback onTap4;
-  GestureTapCallback onTap5;
-  GestureTapCallback onTap6;
-  GestureTapCallback onTap7;
-  GestureTapCallback onTap8;
-  GestureTapCallback onTap9;
-  GestureTapCallback onTap0;
-  GestureTapCallback onTapPoint;
-  GestureTapCallback onTapBackspace;
-  GestureTapCallback clear;
-  GestureTapCallback line;
-  BottomCustomBar({
-    super.key,
-    required this.onTapReload,
-    required this.onTap0,
-    required this.onTap1,
-    required this.onTap2,
-    required this.onTap3,
-    required this.onTap4,
-    required this.onTap5,
-    required this.onTap6,
-    required this.onTap7,
-    required this.onTap8,
-    required this.onTap9,
-    required this.onTapPoint,
-    required this.onTapBackspace,
-    required this.clear,
-    required this.line,
-  });
-
-  @override
-  State<StatefulWidget> createState() {
-    return BottomCustomBarState(
-      onTapReload: onTapReload,
-      onTap1: onTap1,
-      onTap2: onTap2,
-      onTap3: onTap3,
-      onTap4: onTap4,
-      onTap5: onTap5,
-      onTap6: onTap6,
-      onTap7: onTap7,
-      onTap8: onTap8,
-      onTap9: onTap9,
-      onTap0: onTap0,
-      onTapPoint: onTapPoint,
-      onTapBackspace: onTapBackspace,
-      clear: clear,
-      line: line,
-    );
-  }
-}
-
-class BottomCustomBarState extends State<BottomCustomBar> {
-  GestureTapCallback onTapReload;
-  GestureTapCallback onTap1;
-  GestureTapCallback onTap2;
-  GestureTapCallback onTap3;
-  GestureTapCallback onTap4;
-  GestureTapCallback onTap5;
-  GestureTapCallback onTap6;
-  GestureTapCallback onTap7;
-  GestureTapCallback onTap8;
-  GestureTapCallback onTap9;
-  GestureTapCallback onTap0;
-  GestureTapCallback onTapPoint;
-  GestureTapCallback onTapBackspace;
-  GestureTapCallback clear;
-  GestureTapCallback line;
-
-  BottomCustomBarState({
-    required this.onTapReload,
-    required this.onTap0,
-    required this.onTap1,
-    required this.onTap2,
-    required this.onTap3,
-    required this.onTap4,
-    required this.onTap5,
-    required this.onTap6,
-    required this.onTap7,
-    required this.onTap8,
-    required this.onTap9,
-    required this.onTapPoint,
-    required this.onTapBackspace,
-    required this.clear,
-    required this.line,
-  });
+class BottomCustomBar extends StatelessWidget {
+  GestureTapCallback onTapReload = () {};
+  GestureTapCallback onTap1 = () {};
+  GestureTapCallback onTap2 = () {};
+  GestureTapCallback onTap3 = () {};
+  GestureTapCallback onTap4 = () {};
+  GestureTapCallback onTap5 = () {};
+  GestureTapCallback onTap6 = () {};
+  GestureTapCallback onTap7 = () {};
+  GestureTapCallback onTap8 = () {};
+  GestureTapCallback onTap9 = () {};
+  GestureTapCallback onTap0 = () {};
+  GestureTapCallback onTapPoint = () {};
+  GestureTapCallback onTapBackspace = () {};
+  GestureTapCallback clear = () {};
+  GestureTapCallback line = () {};
 
   @override
   Widget build(BuildContext context) {
@@ -107,13 +32,12 @@ class BottomCustomBarState extends State<BottomCustomBar> {
               Color.fromRGBO(27, 177, 180, 1),
             ])),
         height: 300,
-        child: Stack(children: [
-          Positioned(
-              child: Container(
-            margin: const EdgeInsets.only(left: 20, right: 20),
+        child: Column(children: [
+          Container(
+            width: double.infinity,
             height: 1,
             color: const Color.fromRGBO(171, 234, 255, 1),
-          )),
+          ),
           CustomRow(
             onTapReload: onTapReload,
             onTap1: onTap1,

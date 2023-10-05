@@ -1,25 +1,47 @@
+import 'package:exchanger/logic/my_colors.dart';
+import 'package:exchanger/logic/objects.dart';
+import 'package:exchanger/logic/to_ranks.dart';
+import 'package:exchanger/screens/new_screens/main_screen/main_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:provider/provider.dart';
 
-import '../../logic/to_ranks.dart';
+class MoneyCard extends StatefulWidget {
+  final Currency currency;
+  final GestureTapCallback onTap;
+  const MoneyCard({super.key, required this.currency, required this.onTap});
 
-class MoneyCard extends StatelessWidget {
-  String currencyName, number, imgPath;
-  double sideLength = 137;
-  GestureTapCallback onTap;
-  MoneyCard(
-      {super.key,
-      required this.currencyName,
-      required this.number,
-      required this.imgPath,
-      required this.onTap,
-      required this.sideLength});
+  @override
+  State<MoneyCard> createState() => _MoneyCardState();
+}
+
+class _MoneyCardState extends State<MoneyCard> {
+  late bool pressed;
+
+  @override
+  void initState() {
+    pressed = widget.currency.pressed;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    Currency? pickedCurrency =
+        Provider.of<MainProvider>(context, listen: true).pickCurrency;
+
+    double inputMoney =
+        Provider.of<MainProvider>(context, listen: true).inputMoney;
+    double money = culculateMoney(
+        currency: widget.currency,
+        inputMoney: inputMoney,
+        pickedCurrency: pickedCurrency);
+
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Provider.of<MainProvider>(context, listen: false).vibrate();
+        Provider.of<MainProvider>(context, listen: false)
+            .updatePickCurrency(widget.currency);
+      },
       child: Container(
         height: 40,
         width: Get.width - 20,
@@ -29,15 +51,16 @@ class MoneyCard extends StatelessWidget {
           children: [
             Positioned(
               left: 0,
-              child: Container(
+              child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
                   height: 40,
-                  width: sideLength,
+                  width: widget.currency.name == pickedCurrency?.name
+                      ? Get.width - 20
+                      : 140,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                        width: 1,
-                        color: const Color.fromRGBO(255, 255, 255, 1)),
-                    color: const Color.fromRGBO(24, 160, 163, 1),
+                    border: Border.all(width: 1, color: MyColors.white),
+                    color: MyColors.secondary,
                   ),
                   alignment: Alignment.center,
                   child: Row(
@@ -52,14 +75,15 @@ class MoneyCard extends StatelessWidget {
                             color: Colors.transparent,
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                                image: AssetImage("assets/flags/$imgPath"),
+                                image: AssetImage(
+                                    "assets/flags/${widget.currency.imgPath}"),
                                 fit: BoxFit.cover)),
                       ),
                       const SizedBox(
                         width: 30,
                       ),
                       Text(
-                        currencyName,
+                        widget.currency.name,
                         style:
                             const TextStyle(color: Colors.white, fontSize: 22),
                       ),
@@ -67,19 +91,21 @@ class MoneyCard extends StatelessWidget {
                   )),
             ),
             Positioned(
-                right: 0,
+                right: 8,
                 bottom: 0,
-                child: Container(
-                  color: sideLength == 137
-                      ? const Color.fromRGBO(255, 255, 255, 1)
-                      : Colors.transparent,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  color: widget.currency.name == pickedCurrency?.name
+                      ? Colors.transparent
+                      : MyColors.white,
                   width: 135,
                   height: 1,
                 )),
             Positioned(
-              right: sideLength == 137 ? 0 : 10,
+              right: 8,
               bottom: 8,
-              child: Text(toRanksCalc(number: number),
+              child: Text(
+                  toRanksCalc(number: money.toString()),
                   style: const TextStyle(color: Colors.white, fontSize: 18)),
             )
           ],
@@ -87,4 +113,21 @@ class MoneyCard extends StatelessWidget {
       ),
     );
   }
+}
+
+double culculateMoney(
+    {required Currency currency,
+    required double inputMoney,
+    required Currency? pickedCurrency}) {
+  if (currency.name == pickedCurrency?.name) {
+    return inputMoney;
+  }
+
+  if (pickedCurrency == null) {
+    double newMoney =  currency.scale * inputMoney / currency.number;
+    return (newMoney * 1000 ~/ 1) / 1000;
+  }
+
+  double newMoney = currency.scale * inputMoney * pickedCurrency.number / (currency.number * pickedCurrency.scale);
+  return (newMoney * 1000 ~/ 1) / 1000;
 }

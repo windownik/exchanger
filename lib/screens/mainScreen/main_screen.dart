@@ -11,7 +11,7 @@ import '../../logic/curs.dart';
 import '../../logic/flags.dart';
 import '../../logic/main_screen_logic.dart';
 import '../settings/settings_screen.dart';
-import '../settings_gloabal/settings_global.dart';
+import '../../pop_ups/settings_global.dart';
 import 'bottom_custom_bar.dart';
 import 'custom_app_bar_main.dart';
 import 'money_card.dart';
@@ -192,22 +192,22 @@ class StartScreenState extends State<StartScreen> {
                 });
           },
           onPressedShowDialog: () {
-            showDialog(
-                barrierDismissible: false,
-                context: (context),
-                builder: (BuildContext context) {
-                  getShowDialogVars();
-                  return SettingsGlobal(
-                    onPressed: () async {
-                      db = DataBase();
-                      logic.haptic = await db.getVibration();
-                      logic.sound = await db.getSound();
-                      roundNumber = await db.getRound();
-                      Navigator.of(context).pop();
-                      setState(() {});
-                    },
-                  );
-                });
+            // showDialog(
+            //     barrierDismissible: false,
+            //     context: (context),
+            //     builder: (BuildContext context) {
+            //       getShowDialogVars();
+            //       // return AppSettings(
+            //         // onPressed: () async {
+            //         //   db = DataBase();
+            //         //   logic.haptic = await db.getVibration();
+            //         //   logic.sound = await db.getSound();
+            //         //   roundNumber = await db.getRound();
+            //         //   Navigator.of(context).pop();
+            //         //   setState(() {});
+            //         // },
+            //       // );
+            //     });
           },
         ),
         body: Container(

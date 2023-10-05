@@ -80,6 +80,7 @@ class DataBase {
     final storage = await _storage;
     final vibration = storage.getBool("vibration");
     if (vibration == null) {
+      setVibration(false);
       return false;
     }
     return vibration;
@@ -89,6 +90,7 @@ class DataBase {
     final storage = await _storage;
     final sound = storage.getBool("sound");
     if (sound == null) {
+      setSound(false);
       return false;
     }
     return sound;
